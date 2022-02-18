@@ -3,9 +3,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,13 +16,11 @@ public class User {
     private long id;
 
     @Size(min = 10, max = 50)
-    @NotNull
     @NotEmpty
     @Column(name = "email", unique = true)
-    private String enail;
+    private String email;
 
     @Size(min = 4)
-    @NotNull
     @NotEmpty
     @Column(name = "password", unique = true)
     private String password;
@@ -31,4 +28,6 @@ public class User {
     @Column(name = "age")
     private String age;
 
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Pin> pins = new ArrayList<>();
 }
