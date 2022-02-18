@@ -1,5 +1,6 @@
 package backend.entities;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -20,7 +21,7 @@ public class User {
     @NotNull
     @NotEmpty
     @Column(name = "email", unique = true)
-    private String enail;
+    private String email;
 
     @Size(min = 4)
     @NotNull
@@ -30,5 +31,4 @@ public class User {
 
     @Column(name = "age")
     private String age;
-
 }
