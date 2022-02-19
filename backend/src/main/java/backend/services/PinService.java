@@ -55,7 +55,6 @@ public class PinService {
         pin.setOriginalFileName(photo.getOriginalFilename());
         pin.setSize(photo.getSize());
         pin.setContentType(photo.getContentType());
-        pin.setBytes(photo.getBytes());
         //      pin's basic information
         pin.setName(pinRequest.getName());
         pin.setDescription(pinRequest.getDescription());

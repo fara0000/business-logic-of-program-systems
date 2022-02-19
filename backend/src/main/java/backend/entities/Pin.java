@@ -28,9 +28,6 @@ public class Pin {
     @Column(name = "contentType")
     private String contentType;
 
-    @Lob
-    @Column(name = "bytesArray")
-    private byte[] bytes;
 
     /**
      * pin's basic information

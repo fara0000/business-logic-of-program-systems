@@ -37,7 +37,7 @@ public class PinBuilderController {
 
     private final static int MBYTE_20 = 20971520;
 
-    private Map<Long, MultipartFile> photoMap = new HashMap<>();
+    private static Map<Long, MultipartFile> photoMap = new HashMap<>();
 
     /**
      * PIN
@@ -48,7 +48,7 @@ public class PinBuilderController {
      */
 
     @RequestMapping(value = "/pin-builder", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> makePin(@RequestParam PinRequest pin) throws IOException {
+    public ResponseEntity<String> makePin(@RequestBody PinRequest pin) throws IOException {
         log.info("POST request to create new pin {}", pin);
 
         if (pin.getNameOfBoard().isEmpty() || pin.getNameOfBoard() == null) {
@@ -64,14 +64,13 @@ public class PinBuilderController {
                     ("Selected board does not exist", HttpStatus.BAD_REQUEST);
         }
 
-        if (!photoMap.containsKey(pin.getUserId()) || photoMap.get(pin.getUserId()) == null) {
-            log.info("Photo is not uploaded");
+        if (photoMap.containsKey(pin.getUserId()) ) {
+            log.info("Photo is not uploaded" + photoMap.get(Long.getLong(String.valueOf(pin.getUserId()))));
             return new ResponseEntity<>
                     ("Photo is not uploaded, please, upload photo ", HttpStatus.BAD_REQUEST);
         }
 
-        pinService.createPin(pin, photoMap.get(pin.getUserId()));
-        photoMap.put(pin.getUserId(), null);
+        pinService.createPin(pin, photoMap.get(Long.getLong(String.valueOf(pin.getUserId()))));
         log.info("Pin {} was successfully created!", pin);
         return new ResponseEntity<>("Pin was created", HttpStatus.CREATED);
     }
@@ -90,7 +89,7 @@ public class PinBuilderController {
             return new ResponseEntity<>("Error: photo is so big !", HttpStatus.BAD_REQUEST);
         }
         photoMap.put(userId, multipartFile);
-        log.info("Photo has been uploaded");
+        log.info("Photo has been uploaded " + photoMap.get(userId));
         return new ResponseEntity<>("Photo has been uploaded", HttpStatus.CREATED);
 
     }
@@ -112,8 +111,8 @@ public class PinBuilderController {
      * creating boards for pin
      */
 
-    @RequestMapping(value = "/pin-builder/create-board", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> makeBoard(@Valid @RequestParam BoardRequest board, BindingResult result) {
+    @RequestMapping(value = "/pin-builder/create-board", method = {RequestMethod.OPTIONS, RequestMethod.POST})
+    public ResponseEntity<String> makeBoard(@Valid @RequestBody BoardRequest board, BindingResult result) {
         log.info("POST request to create new board {}", board);
 
         if (result.hasErrors()) {
@@ -127,9 +126,7 @@ public class PinBuilderController {
         }
         boardService.createBoard(board);
         log.info("Board {} was successfully created!", board);
-        return new ResponseEntity<String>("Board was created", HttpStatus.CREATED);
-
-
+        return new ResponseEntity<>("Board was created", HttpStatus.CREATED);
     }
 
 
