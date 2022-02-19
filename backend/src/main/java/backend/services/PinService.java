@@ -9,6 +9,7 @@ import backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -19,36 +20,32 @@ public class PinService {
     private final PinRepository pinRepository;
     private final BoardRepository boardRepository;
 
-    public void createPin(PinRequest pinRequest) throws IOException {
-        if (pinRequest.getMultipartFile().getSize() != 0) {
+    public void createPin(PinRequest pinRequest, MultipartFile photo) throws IOException {
 
-            Pin pin = toPinEntity(pinRequest);
+        Pin pin = toPinEntity(pinRequest, photo);
 
-            Board board = boardRepository.
-                    findBoardsByName(pinRequest.getNameOfBoard());
+        Board board = boardRepository.
+                findBoardsByName(pinRequest.getNameOfBoard());
 
-            pin.setBoard(board);
-            //pin.setUser(user)
-            //user.addPinToUser(pin);
-            board.addPinToBoard(pin);
+        pin.setBoard(board);
+        //pin.setUser(user)
+        //user.addPinToUser(pin);
+        board.addPinToBoard(pin);
 
-            pinRepository.save(pin);
+        pinRepository.save(pin);
 
-            log.info("created new pin");
+        log.info("created new pin");
 
-        } else {
-
-        }
     }
 
 
-    private Pin toPinEntity(PinRequest pinRequest) throws IOException {
+    private Pin toPinEntity(PinRequest pinRequest, MultipartFile photo) throws IOException {
         Pin pin = new Pin();
         //      photo's service information
-        pin.setOriginalFileName(pinRequest.getMultipartFile().getName());
-        pin.setSize(pinRequest.getMultipartFile().getSize());
-        pin.setContentType(pinRequest.getMultipartFile().getContentType());
-        pin.setBytes(pinRequest.getMultipartFile().getBytes());
+        pin.setOriginalFileName(photo.getOriginalFilename());
+        pin.setSize(photo.getSize());
+        pin.setContentType(photo.getContentType());
+        pin.setBytes(photo.getBytes());
         //      pin's basic information
         pin.setName(pinRequest.getName());
         pin.setDescription(pinRequest.getDescription());

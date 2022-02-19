@@ -3,13 +3,14 @@ package backend.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class  Pin {
+public class Pin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -28,7 +29,7 @@ public class  Pin {
     private String contentType;
 
     @Lob
-    @Column(name = "")
+    @Column(name = "bytesArray")
     private byte[] bytes;
 
     /**
