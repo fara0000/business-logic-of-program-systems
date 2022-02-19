@@ -3,6 +3,7 @@ package backend.services;
 import backend.dto.requests.BoardRequest;
 import backend.entities.Board;
 import backend.entities.User;
+import backend.exception.ServiceDataBaseException;
 import backend.repositories.BoardRepository;
 import backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -17,12 +18,21 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
-    public void createBoard(BoardRequest boardRequest) {
+    public void createBoard(BoardRequest boardRequest) throws ServiceDataBaseException {
+
         Board board = toBoardEntity(boardRequest);
         User user = userRepository.findUserById(boardRequest.getUserId());
         user.addBoardToUser(board);
-        boardRepository.save(board);
+        try {
+            boardRepository.save(board);
+        } catch (Exception e) {
+            log.error("Unexpected Error {}", e.getMessage());
+            new ServiceDataBaseException(e.getMessage());
+        }
+
         log.info("create new board");
+
+
     }
 
     private Board toBoardEntity(BoardRequest boardRequest) {

@@ -4,6 +4,7 @@ import backend.dto.requests.PinRequest;
 import backend.entities.Board;
 import backend.entities.Pin;
 import backend.entities.User;
+import backend.exception.ServiceDataBaseException;
 import backend.repositories.BoardRepository;
 import backend.repositories.PinRepository;
 import backend.repositories.UserRepository;
@@ -23,7 +24,7 @@ public class PinService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
-    public void createPin(PinRequest pinRequest, MultipartFile photo) throws IOException {
+    public void createPin(PinRequest pinRequest, MultipartFile photo) throws IOException, ServiceDataBaseException {
 
         Pin pin = toPinEntity(pinRequest, photo);
 
@@ -36,7 +37,12 @@ public class PinService {
         user.addPinToUser(pin);
         board.addPinToBoard(pin);
 
-        pinRepository.save(pin);
+        try {
+            pinRepository.save(pin);
+        } catch (Exception e) {
+            log.error("Unexpected Error {}", e.getMessage());
+            new ServiceDataBaseException();
+        }
 
         log.info("created new pin");
 

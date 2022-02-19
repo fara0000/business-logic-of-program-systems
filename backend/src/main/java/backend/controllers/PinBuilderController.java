@@ -14,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -51,38 +48,32 @@ public class PinBuilderController {
      */
 
     @RequestMapping(value = "/pin-builder", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> makePin(@RequestParam PinRequest pin) {
-        try {
-            log.info("POST request to create new pin {}", pin);
+    public ResponseEntity<String> makePin(@RequestParam PinRequest pin) throws IOException {
+        log.info("POST request to create new pin {}", pin);
 
-            if (pin.getNameOfBoard().isEmpty() || pin.getNameOfBoard() == null) {
-                log.info("Validation Error - no board");
-                return new ResponseEntity<>
-                        ("The board must be specified, " +
-                                "if there are no boards, create a new one.", HttpStatus.BAD_REQUEST);
-            }
-
-            if (boardService.findBoard(pin.getNameOfBoard())) {
-                log.info("Selected board does not exist.");
-                return new ResponseEntity<>
-                        ("Selected board does not exist", HttpStatus.BAD_REQUEST);
-            }
-
-            if (!photoMap.containsKey(pin.getUserId()) || photoMap.get(pin.getUserId()) == null) {
-                log.info("Photo is not uploaded");
-                return new ResponseEntity<>
-                        ("Photo is not uploaded, please, upload photo ", HttpStatus.BAD_REQUEST);
-            }
-
-            pinService.createPin(pin, photoMap.get(pin.getUserId()));
-            photoMap.put(pin.getUserId(), null);
-            log.info("Pin {} was successfully created!", pin);
-            return new ResponseEntity<>("Pin was created", HttpStatus.CREATED);
-
-        } catch (Exception e) {
-            log.info("Unexpected Error {}", e.getMessage());
-            return new ResponseEntity<>("Validation Error", HttpStatus.BAD_REQUEST);
+        if (pin.getNameOfBoard().isEmpty() || pin.getNameOfBoard() == null) {
+            log.info("Validation Error - no board");
+            return new ResponseEntity<>
+                    ("The board must be specified, " +
+                            "if there are no boards, create a new one.", HttpStatus.BAD_REQUEST);
         }
+
+        if (boardService.findBoard(pin.getNameOfBoard())) {
+            log.info("Selected board does not exist.");
+            return new ResponseEntity<>
+                    ("Selected board does not exist", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!photoMap.containsKey(pin.getUserId()) || photoMap.get(pin.getUserId()) == null) {
+            log.info("Photo is not uploaded");
+            return new ResponseEntity<>
+                    ("Photo is not uploaded, please, upload photo ", HttpStatus.BAD_REQUEST);
+        }
+
+        pinService.createPin(pin, photoMap.get(pin.getUserId()));
+        photoMap.put(pin.getUserId(), null);
+        log.info("Pin {} was successfully created!", pin);
+        return new ResponseEntity<>("Pin was created", HttpStatus.CREATED);
     }
 
     /**
@@ -123,25 +114,23 @@ public class PinBuilderController {
 
     @RequestMapping(value = "/pin-builder/create-board", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<String> makeBoard(@Valid @RequestParam BoardRequest board, BindingResult result) {
-        try {
-            log.info("POST request to create new board {}", board);
+        log.info("POST request to create new board {}", board);
 
-            if (result.hasErrors()) {
-                log.info("Validation Error");
-                return new ResponseEntity<>("Board's name cannot be empty", HttpStatus.BAD_REQUEST);
-            }
-
-            if (!boardService.findBoard(board.getName())) {
-                log.info("Board name is not unique");
-                return new ResponseEntity<>("Board name must be unique", HttpStatus.BAD_REQUEST);
-            }
-            boardService.createBoard(board);
-            log.info("Board {} was successfully created!", board);
-            return new ResponseEntity<String>("Board was created", HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.info("Unexpected Error {}", e.getMessage());
-            return new ResponseEntity<>("Validation Error", HttpStatus.BAD_REQUEST);
+        if (result.hasErrors()) {
+            log.info("Validation Error");
+            return new ResponseEntity<>("Board's name cannot be empty", HttpStatus.BAD_REQUEST);
         }
 
+        if (!boardService.findBoard(board.getName())) {
+            log.info("Board name is not unique");
+            return new ResponseEntity<>("Board name must be unique", HttpStatus.BAD_REQUEST);
+        }
+        boardService.createBoard(board);
+        log.info("Board {} was successfully created!", board);
+        return new ResponseEntity<String>("Board was created", HttpStatus.CREATED);
+
+
     }
+
+
 }
