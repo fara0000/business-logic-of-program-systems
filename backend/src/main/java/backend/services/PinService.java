@@ -3,6 +3,7 @@ package backend.services;
 import backend.dto.requests.PinRequest;
 import backend.entities.Board;
 import backend.entities.Pin;
+import backend.entities.User;
 import backend.repositories.BoardRepository;
 import backend.repositories.PinRepository;
 import backend.repositories.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -19,6 +21,7 @@ import java.io.IOException;
 public class PinService {
     private final PinRepository pinRepository;
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     public void createPin(PinRequest pinRequest, MultipartFile photo) throws IOException {
 
@@ -26,10 +29,11 @@ public class PinService {
 
         Board board = boardRepository.
                 findBoardsByName(pinRequest.getNameOfBoard());
+        User user = userRepository.findUserById(pinRequest.getUserId());
 
         pin.setBoard(board);
-        //pin.setUser(user)
-        //user.addPinToUser(pin);
+        pin.setUser(user);
+        user.addPinToUser(pin);
         board.addPinToBoard(pin);
 
         pinRepository.save(pin);
