@@ -32,6 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    public JwtFilter authenticationJwtTokenFilter() {
 //        return new JwtFilter();
 //    }
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -44,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/").not().fullyAuthenticated()
                 .antMatchers(HttpMethod.POST, "/login", "/register").not().fullyAuthenticated()
                 //Доступ разрешен всем пользователей
+                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 //Доступ только для авторизованных пользователей
                 .antMatchers("/**").authenticated()
                 .and()
