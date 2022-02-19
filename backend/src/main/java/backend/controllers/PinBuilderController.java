@@ -89,16 +89,16 @@ public class PinBuilderController {
      * upload photo for pin
      */
     @RequestMapping(value = "/pin-builder/upload-photo", method = RequestMethod.POST, consumes = "multipart/form-data", produces = "multipart/form-data")
-    public ResponseEntity<String> uploadPhoto(@RequestParam UploadPhotoRequest uploadPhotoRequest) throws IOException {
-        if (uploadPhotoRequest.getMultipartFile().getSize() == 0) {
+    public ResponseEntity<String> uploadPhoto(@RequestParam("file") MultipartFile multipartFile, Long userId) throws IOException {
+        if (multipartFile.getSize() == 0) {
             log.info("Photo is 0 bite");
             return new ResponseEntity<>("Error: photo is 0 bite", HttpStatus.BAD_REQUEST);
         }
-        if (uploadPhotoRequest.getMultipartFile().getSize() < MBYTE_20) {
-            log.info("Photo is so big.");
+        if (multipartFile.getSize() > MBYTE_20) {
+            log.info("Photo is so big. Size is " + multipartFile.getSize());
             return new ResponseEntity<>("Error: photo is so big !", HttpStatus.BAD_REQUEST);
         }
-        photoMap.put(uploadPhotoRequest.getUserId(), uploadPhotoRequest.getMultipartFile());
+        photoMap.put(userId, multipartFile);
         log.info("Photo has been uploaded");
         return new ResponseEntity<>("Photo has been uploaded", HttpStatus.CREATED);
 

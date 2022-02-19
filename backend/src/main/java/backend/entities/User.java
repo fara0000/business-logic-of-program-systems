@@ -24,7 +24,7 @@ public class User implements UserDetails {
 
     @Size(min = 4)
     @NotEmpty
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "age")

@@ -1,6 +1,8 @@
 package backend.config;
 
 //import backend.filters.JwtFilter;
+//import backend.filter.JwtFilter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.filters.CorsFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -19,26 +21,31 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        log.debug("1");
+//        return super.authenticationManagerBean();
+//    }
 
-    //    @Bean
+//    @Bean
 //    public JwtFilter authenticationJwtTokenFilter() {
+//        log.debug("2");
 //        return new JwtFilter();
 //    }
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        log.debug("3");
         return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        log.debug("4");
         httpSecurity
                 .cors().and()
                 .httpBasic().disable()
@@ -50,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //Доступ разрешен всем пользователей
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 //Доступ только для авторизованных пользователей
-                .antMatchers("/**").authenticated()
+                .antMatchers("/**").permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

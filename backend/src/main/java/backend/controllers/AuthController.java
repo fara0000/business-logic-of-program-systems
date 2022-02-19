@@ -1,7 +1,9 @@
 package backend.controllers;
 
+import backend.dto.mappers.UserMapper;
 import backend.dto.requests.LoginRequest;
 import backend.dto.requests.UserDto;
+import backend.dto.responses.LoginDto;
 import backend.dto.responses.LoginResponse;
 import backend.entities.User;
 import backend.repositories.UserRepository;
@@ -17,10 +19,12 @@ import javax.validation.Valid;
 @RestController
 public class AuthController {
     private final UserService userService;
+    private final UserMapper userMapper;
     private final UserRepository userRepository;
 
-    public AuthController(UserService userService, UserRepository userRepository) {
+    public AuthController(UserService userService, UserMapper userMapper, UserRepository userRepository) {
         this.userService = userService;
+        this.userMapper = userMapper;
         this.userRepository = userRepository;
     }
 
@@ -46,6 +50,7 @@ public class AuthController {
 
     @RequestMapping(value = "/login", consumes = "application/json", method = {RequestMethod.OPTIONS, RequestMethod.POST})
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, BindingResult bindingResult) {
+        log.debug(String.valueOf(loginRequest));
         try {
             log.debug("POST request to login user {}", loginRequest);
 
@@ -55,7 +60,8 @@ public class AuthController {
             }
 
             User user = userRepository.findUserByEmail(loginRequest.getEmail());
-            LoginResponse loginResponse = new LoginResponse(userService.getUserToken(loginRequest), user);
+            LoginDto loginDto = userMapper.convertMemberToDto(user);
+            LoginResponse loginResponse = new LoginResponse("Bearer kjfdskljfklsfjksfjksfjkfkjsdkf", loginDto);
             return new ResponseEntity<>(loginResponse, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Unexpected error {}", e.getMessage());
