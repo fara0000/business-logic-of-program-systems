@@ -1,26 +1,32 @@
 package backend.controllers;
 
-import backend.dto.requests.RegistrationRequest;
+import backend.dto.requests.LoginRequest;
+import backend.dto.requests.UserDto;
+import backend.dto.responses.LoginResponse;
+import backend.entities.User;
+import backend.repositories.UserRepository;
 import backend.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Slf4j
-@Controller
+@RestController
 public class AuthController {
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @RequestMapping(value = "/register", consumes = "application/json", produces = "application/json", method = {RequestMethod.OPTIONS, RequestMethod.POST})
-    public ResponseEntity<String> register(@Valid @RequestBody RegistrationRequest user, BindingResult result) {
+    public ResponseEntity<String> register(@Valid @RequestBody UserDto user, BindingResult result) {
+        log.debug(String.valueOf(user));
         try {
             log.info("POST request to register user {}", user);
             if (result.hasErrors()) {
@@ -28,13 +34,32 @@ public class AuthController {
                 return new ResponseEntity<>("Validation Error", HttpStatus.BAD_REQUEST);
             }
 
-            boolean isSaved = userService.saveMember();
+            boolean isSaved = userService.saveMember(user);
             System.out.println(isSaved);
             return isSaved ? new ResponseEntity<>("User registered successfully!", HttpStatus.OK) :
                     new ResponseEntity<>("User has already registered!", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             log.info("Unexpected Error {}", e.getMessage());
             return new ResponseEntity<>("Validation Error", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/login", consumes = "application/json", method = {RequestMethod.OPTIONS, RequestMethod.POST})
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, BindingResult bindingResult) {
+        try {
+            log.debug("POST request to login user {}", loginRequest);
+
+            if(bindingResult.hasErrors()) {
+                log.error("Validation error");
+                return new ResponseEntity<>("Ошибка валидации", HttpStatus.BAD_REQUEST);
+            }
+
+            User user = userRepository.findUserByEmail(loginRequest.getEmail());
+            LoginResponse loginResponse = new LoginResponse(userService.getUserToken(loginRequest), user);
+            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Unexpected error {}", e.getMessage());
+            return new ResponseEntity<>("Неверные учетные данные пользователя", HttpStatus.BAD_REQUEST);
         }
     }
 }
