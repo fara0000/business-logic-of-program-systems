@@ -5,9 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -31,6 +29,22 @@ public class User implements UserDetails {
 
     @Column(name = "age")
     private String age;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Pin> pins = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Board> boards = new ArrayList<>();
+
+    public void addPinToUser(Pin pin) {
+        pin.setUser(this);
+        pins.add(pin);
+    }
+
+    public void addBoardToUser(Board board) {
+        board.setUser(this);
+        boards.add(board);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

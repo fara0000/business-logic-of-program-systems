@@ -33,6 +33,7 @@ public class AuthController {
                 log.info("Validation Error");
                 return new ResponseEntity<>("Validation Error", HttpStatus.BAD_REQUEST);
             }
+
             boolean isSaved = userService.saveMember(user);
             System.out.println(isSaved);
             return isSaved ? new ResponseEntity<>("User registered successfully!", HttpStatus.OK) :
