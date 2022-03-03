@@ -11,25 +11,25 @@ import java.util.Date;
 @Slf4j
 @Component
 public class JwtUtils {
-    private String jwtSecret = "VorovatPloho";
-    private int jwtExpirationMs = 100000000;
+    private final String JWT_SECRET = "VorovatPloho";
+    private final int JWT_EXPIRATION_MS = 100000000;
 
     public String generateJwtToken(Authentication authentication) {
 
         User userPrincipal = (User) authentication.getPrincipal();
 
         return Jwts.builder().setSubject((userPrincipal.getEmail())).setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(new Date((new Date()).getTime() + JWT_EXPIRATION_MS)).signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
 //            log.error("Invalid JWT signature: {}", e.getMessage());

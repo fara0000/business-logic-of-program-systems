@@ -1,7 +1,9 @@
 package backend.services;
+
 import backend.dto.requests.LoginRequest;
 import backend.dto.requests.UserDto;
 import backend.entities.User;
+import backend.exception.ServiceDataBaseException;
 import backend.repositories.UserRepository;
 import backend.security.JwtUtils;
 import lombok.AllArgsConstructor;
@@ -51,7 +53,12 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            log.error("Unexpected Error {}", e.getMessage());
+            new ServiceDataBaseException();
+        }
 
         return true;
     }

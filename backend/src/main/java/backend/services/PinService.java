@@ -24,9 +24,9 @@ public class PinService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
-    public void createPin(PinRequest pinRequest, MultipartFile photo) throws IOException, ServiceDataBaseException {
+    public void createPin(PinRequest pinRequest, String file_name, byte[] bytes) throws IOException, ServiceDataBaseException {
 
-        Pin pin = toPinEntity(pinRequest, photo);
+        Pin pin = toPinEntity(pinRequest, file_name, bytes);
 
         Board board = boardRepository.
                 findBoardsByName(pinRequest.getNameOfBoard());
@@ -49,16 +49,15 @@ public class PinService {
     }
 
 
-    private Pin toPinEntity(PinRequest pinRequest, MultipartFile photo) throws IOException {
+    private Pin toPinEntity(PinRequest pinRequest, String file_name, byte[] bytes) throws IOException {
         Pin pin = new Pin();
         //      photo's service information
-        pin.setOriginalFileName(photo.getOriginalFilename());
-        pin.setSize(photo.getSize());
-        pin.setContentType(photo.getContentType());
+        pin.setOriginalFileName(file_name);
+        pin.setBytes(bytes);
         //      pin's basic information
         pin.setName(pinRequest.getName());
         pin.setDescription(pinRequest.getDescription());
-        pin.setAlt_text(pinRequest.getAlt_text());
+        pin.setAltText(pinRequest.getAlt_text());
         pin.setLink(pinRequest.getLink());
 
         return pin;
