@@ -2,14 +2,15 @@ package backend.config;
 
 //import backend.filters.JwtFilter;
 //import backend.filter.JwtFilter;
+import backend.error.ErrorEnum;
+import backend.error.dto.ApplicationErrorDto;
+import backend.filter.JwtFilter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.filters.CorsFilter;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,58 +22,63 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
+
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        log.debug("1");
-//        return super.authenticationManagerBean();
-//    }
+    private final JwtFilter jwtFilter;
 
-//    @Bean
-//    public JwtFilter authenticationJwtTokenFilter() {
-//        log.debug("2");
-//        return new JwtFilter();
-//    }
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        log.debug("3");
         return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        log.debug("4");
-        httpSecurity
-                .cors().and()
-                .httpBasic().disable()
-                .csrf().disable()
-                .authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
-                .antMatchers(HttpMethod.GET, "/").not().fullyAuthenticated()
-                .antMatchers(HttpMethod.POST, "/login", "/register").not().fullyAuthenticated()
-                //Доступ разрешен всем пользователей
-                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                //Доступ только для авторизованных пользователей
-                .antMatchers("/**").permitAll()
-                .and()
-                .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        //enable CORS and disable CRSF
+        httpSecurity.cors().configurationSource(corsConfigurationSource()).and().csrf().disable();
+        // Set session management to stateless
+        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
+        // Set unauthorized requests exception handler
+        httpSecurity.exceptionHandling().authenticationEntryPoint((request, response, ex) -> {
+                            response.sendError(
+                                    HttpServletResponse.SC_UNAUTHORIZED,
+                                    ex.getMessage()
+                            );
+                        }
+                )
                 .and();
-//                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        // Set permissions on endpoints
+        httpSecurity.authorizeRequests()
+            //Доступ только для не зарегистрированных пользователей
+            .antMatchers(HttpMethod.GET, "/").not().fullyAuthenticated()
+            .antMatchers(HttpMethod.GET,"/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/login").permitAll()
+            .antMatchers(HttpMethod.POST, "/register").permitAll()
+            .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+            //Доступ только для авторизованных пользователей
+            .antMatchers(HttpMethod.POST, "/**")
+            .authenticated();
+        httpSecurity.headers().frameOptions().sameOrigin();
+        httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    /**
+     * Конфигарация CORS.
+     */
+    private CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedMethods(Collections.singletonList("*"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
+        source.setAlwaysUseFullPath(true);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
