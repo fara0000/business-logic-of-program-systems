@@ -38,7 +38,7 @@ public class PinBuilderController {
      * creating Pin
      */
 
-    @Transactional
+//    @Transactional
     @RequestMapping(value = "/pin-builder", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<String> makePin(@RequestBody PinRequest pin) throws IOException {
         log.info("POST request to create new pin {}", pin);

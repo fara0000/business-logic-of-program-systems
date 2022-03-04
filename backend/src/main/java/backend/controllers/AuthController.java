@@ -7,6 +7,7 @@ import backend.dto.responses.LoginDto;
 import backend.dto.responses.LoginResponse;
 import backend.entities.User;
 import backend.repositories.UserRepository;
+import backend.security.JwtUtils;
 import backend.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -54,14 +55,12 @@ public class AuthController {
         try {
             log.debug("POST request to login user {}", loginRequest);
 
-            if(bindingResult.hasErrors()) {
+            if (bindingResult.hasErrors()) {
                 log.error("Validation error");
                 return new ResponseEntity<>("Ошибка валидации", HttpStatus.BAD_REQUEST);
             }
 
-            User user = userRepository.findUserByEmail(loginRequest.getEmail());
-            LoginDto loginDto = userMapper.convertMemberToDto(user);
-            LoginResponse loginResponse = new LoginResponse("Bearer kjfdskljfklsfjksfjksfjkfkjsdkf", loginDto);
+            LoginResponse loginResponse = userService.login(loginRequest);
             return new ResponseEntity<>(loginResponse, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Unexpected error {}", e.getMessage());
