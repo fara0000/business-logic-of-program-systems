@@ -1,5 +1,6 @@
 package backend.entities;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Data
 @NoArgsConstructor
 public class Pin {
     @Id
@@ -22,12 +24,9 @@ public class Pin {
     @Column(name = "originalFileName")
     private String originalFileName;
 
-    @Column(name = "size")
-    private Long size;
-
-    @Column(name = "contentType")
-    private String contentType;
-
+//    @Lob
+    @Column(name = "mas_byte")
+    private byte[] bytes;
 
     /**
      * pin's basic information
@@ -40,7 +39,7 @@ public class Pin {
     private String description;
 
     @Column(name = "alt_text")
-    private String alt_text;
+    private String altText;
 
     @Column(name = "link")
     private String link;

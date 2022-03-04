@@ -1,10 +1,12 @@
 package backend.services;
+
 import backend.dto.mappers.UserMapper;
 import backend.dto.requests.LoginRequest;
 import backend.dto.requests.UserDto;
 import backend.dto.responses.LoginDto;
 import backend.dto.responses.LoginResponse;
 import backend.entities.User;
+import backend.exception.ServiceDataBaseException;
 import backend.error.ErrorEnum;
 import backend.repositories.UserRepository;
 import backend.security.JwtUtils;
@@ -49,7 +51,12 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            log.error("Unexpected Error {}", e.getMessage());
+            new ServiceDataBaseException();
+        }
 
         return true;
     }
