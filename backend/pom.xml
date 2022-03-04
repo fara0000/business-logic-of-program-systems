@@ -41,7 +41,7 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
-<!--        swagger - https://www.baeldung.com/spring-rest-openapi-documentation-->
+        <!--        swagger - https://www.baeldung.com/spring-rest-openapi-documentation-->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>

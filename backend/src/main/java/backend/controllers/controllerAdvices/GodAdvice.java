@@ -1,4 +1,4 @@
-package backend.controllers;
+package backend.controllers.controllerAdvices;
 
 import backend.exception.ServiceDataBaseException;
 import org.springframework.http.HttpStatus;
