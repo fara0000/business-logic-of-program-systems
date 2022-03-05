@@ -1,6 +1,6 @@
-package backend.controllers.controllerAdvices;
+package backend.controllers.controllerAdvice;
 
-import backend.exception.ServiceDataBaseException;
+import backend.exceptions.ServiceDataBaseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

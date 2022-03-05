@@ -3,7 +3,7 @@ package backend.services;
 import backend.dto.requests.BoardRequest;
 import backend.entities.Board;
 import backend.entities.User;
-import backend.exception.ServiceDataBaseException;
+import backend.exceptions.ServiceDataBaseException;
 import backend.repositories.BoardRepository;
 import backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;

@@ -6,25 +6,15 @@ import backend.dto.requests.UserDto;
 import backend.dto.responses.LoginDto;
 import backend.dto.responses.LoginResponse;
 import backend.entities.User;
-import backend.exception.ServiceDataBaseException;
-import backend.error.ErrorEnum;
+import backend.exceptions.ServiceDataBaseException;
+import backend.exceptions.ErrorEnum;
 import backend.repositories.UserRepository;
 import backend.security.JwtUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-
-import javax.validation.Valid;
 
 @Slf4j
 @Service

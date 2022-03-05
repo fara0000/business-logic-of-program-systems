@@ -1,6 +1,6 @@
-package backend.error;
+package backend.exceptions;
 
-import backend.error.dto.ApplicationErrorDto;
+import backend.exceptions.dto.ApplicationErrorDto;
 import lombok.Getter;
 
 @Getter

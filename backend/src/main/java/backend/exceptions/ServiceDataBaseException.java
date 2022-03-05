@@ -1,4 +1,4 @@
-package backend.exception;
+package backend.exceptions;
 
 public class ServiceDataBaseException extends RuntimeException{
     private String message;
