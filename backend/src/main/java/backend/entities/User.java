@@ -14,7 +14,8 @@ import java.util.*;
 @Table(name = "creator")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="token_seq")
+    @SequenceGenerator(name="token_seq", sequenceName="token_seq", allocationSize=1)
     private long id;
 
     @Size(min = 10, max = 50)
