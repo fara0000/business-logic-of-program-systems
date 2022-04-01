@@ -1,6 +1,7 @@
 package backend.config;
 
 import backend.filters.JwtFilter;
+import backend.models.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -67,16 +68,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.authorizeRequests()
                 //Доступ только для не зарегистрированных пользователей
                 .antMatchers(HttpMethod.GET, "/").not().fullyAuthenticated()
-                .antMatchers(HttpMethod.GET, "/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
-                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers(HttpMethod.GET, "/pin-builder/**").hasRole(Role.USER.name())
+                .antMatchers(HttpMethod.POST, "/pin-builder/**").hasRole(Role.ADMIN.name())
                 //Доступ только для авторизованных пользователей
-                .antMatchers(HttpMethod.POST, "/**")
-                .authenticated();
+                .anyRequest().authenticated();
         httpSecurity.headers().frameOptions().sameOrigin();
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+    private static final String[] AUTH_WHITELIST = {
+        "/swagger-resources/**",
+        "/swagger-ui/**",
+        "/v3/api-docs",
+        "/v3/api-docs/**",
+    };
+
+    private static final String[] ADMIN_ACCESS = {
+        //endpoints for admin
+    };
+
+    private static final String[] USER_ACCESS = {
+       "/pin-builder/**",
+       "/pin-builder/find-board/**"
+    };
 
     /**
      * Конфигарация CORS.
