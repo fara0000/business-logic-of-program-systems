@@ -1,8 +1,7 @@
 package backend.entities;
 
+import backend.models.Role;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -12,7 +11,7 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "creator")
+@Table(name = "customer")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

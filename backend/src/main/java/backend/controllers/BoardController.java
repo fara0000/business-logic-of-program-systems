@@ -9,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -35,9 +32,9 @@ public class BoardController {
      * finding all boards
      */
 
-    @RequestMapping(value = "/pin-builder/find-boards", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
-    public List<Board> getAllBoards(@RequestBody Long userID) {
-        return boardRepository.findAllById(Collections.singleton(userID));
+    @RequestMapping(value = "/pin-builder/find-boards", method = RequestMethod.GET)
+    public List<Board> getAllBoards(@RequestParam Long userID) {
+        return boardRepository.findAllByUser_Id(userID);
     }
 
     /**

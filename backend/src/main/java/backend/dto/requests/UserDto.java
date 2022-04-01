@@ -1,6 +1,5 @@
 package backend.dto.requests;
 
-import backend.entities.Role;
 import lombok.Data;
 
 @Data
