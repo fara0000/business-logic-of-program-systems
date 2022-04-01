@@ -32,9 +32,9 @@ public class BoardController {
      * finding all boards
      */
 
-    @RequestMapping(value = "/pin-builder/find-boards", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/pin-builder/find-boards", method = RequestMethod.GET)
     public List<Board> getAllBoards(@RequestParam Long userID) {
-        return boardRepository.findAllById(Collections.singleton(userID));
+        return boardRepository.findAllByUser_Id(userID);
     }
 
     /**

@@ -71,8 +71,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers(HttpMethod.GET, "/pin-builder/**").hasRole(Role.USER.name())
-                .antMatchers(HttpMethod.POST, "/pin-builder/**").hasRole(Role.ADMIN.name())
+                .antMatchers( "/pin-builder/**").hasRole(Role.USER.name())
+                .antMatchers(ADMIN_ACCESS).hasRole(Role.ADMIN.name())
                 //Доступ только для авторизованных пользователей
                 .anyRequest().authenticated();
         httpSecurity.headers().frameOptions().sameOrigin();
