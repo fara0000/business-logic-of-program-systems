@@ -56,7 +56,7 @@ public class PinBuilderController {
                     ("Selected board does not exist", HttpStatus.BAD_REQUEST);
         }
 
-        if (photoMap.containsKey(pin.getUserId())) {
+        if (photoMap.containsKey(pin.getUserId()) || photoMap.get(pin.getUserId()).isEmpty()) {
             log.info("Photo is not uploaded" + photoMap.get(Long.getLong(pin.getUserId().toString())));
             return new ResponseEntity<>
                     ("Photo is not uploaded, please, upload photo ", HttpStatus.BAD_REQUEST);
@@ -72,6 +72,7 @@ public class PinBuilderController {
         }
 
         pinService.createPin(pin, file_name, bytes);
+        photoMap.put(pin.getUserId(), "");
         log.info("Pin {} was successfully created!", pin);
         return new ResponseEntity<>("Pin was created", HttpStatus.CREATED);
     }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -35,8 +36,8 @@ public class BoardController {
      */
 
     @RequestMapping(value = "/pin-builder/find-boards", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
-    public List<Board> getAllBoards() {
-        return boardRepository.findAll();
+    public List<Board> getAllBoards(@RequestBody Long userID) {
+        return boardRepository.findAllById(Collections.singleton(userID));
     }
 
     /**

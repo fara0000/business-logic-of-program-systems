@@ -24,8 +24,8 @@ public class Pin {
     @Column(name = "originalFileName")
     private String originalFileName;
 
-//    @Lob
-    @Column(name = "mas_byte")
+    @Lob
+    @Column(name = "mas_byte", columnDefinition = "BLOB")
     private byte[] bytes;
 
     /**

@@ -56,12 +56,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
         // Set unauthorized requests exception handler
         httpSecurity.exceptionHandling().authenticationEntryPoint((request, response, ex) -> {
-                            response.sendError(
-                                    HttpServletResponse.SC_UNAUTHORIZED,
-                                    ex.getMessage()
-                            );
-                        }
-                )
+                    response.sendError(
+                            HttpServletResponse.SC_UNAUTHORIZED,
+                            ex.getMessage()
+                    );
+                }
+        )
                 .and();
         // Set permissions on endpoints
         httpSecurity.authorizeRequests()
