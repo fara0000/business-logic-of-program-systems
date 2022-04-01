@@ -5,6 +5,7 @@ import backend.dto.requests.LoginRequest;
 import backend.dto.requests.UserDto;
 import backend.dto.responses.LoginDto;
 import backend.dto.responses.LoginResponse;
+import backend.entities.Role;
 import backend.entities.User;
 import backend.exceptions.ApplicationException;
 import backend.exceptions.ServiceDataBaseException;
@@ -43,7 +44,7 @@ public class UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setAge(userDto.getAge());
-        user.setRole(userDto.getRole());
+        user.setRole(Role.USER);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

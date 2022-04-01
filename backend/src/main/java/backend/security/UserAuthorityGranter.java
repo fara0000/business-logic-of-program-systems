@@ -20,4 +20,5 @@ public class UserAuthorityGranter implements AuthorityGranter {
         String role = String.valueOf(userRepository.findRoleByEmail(principal.getName()));
         return Collections.singleton(role);
     }
+
 }

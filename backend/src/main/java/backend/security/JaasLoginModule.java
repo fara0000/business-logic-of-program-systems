@@ -67,6 +67,7 @@ public class JaasLoginModule implements LoginModule {
 
     @Override
     public boolean commit() throws LoginException {
+
         if (!loginSucceeded) {
             return false;
         }
