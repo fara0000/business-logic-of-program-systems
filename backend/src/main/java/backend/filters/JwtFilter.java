@@ -1,17 +1,12 @@
-package backend.filter;
+package backend.filters;
 //
 import backend.entities.User;
 import backend.repositories.UserRepository;
-import backend.security.JwtUtils;
-import backend.services.UserService;
+import backend.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -27,15 +22,15 @@ import static org.springframework.util.StringUtils.hasText;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION = "Authorization";
-    private final JwtUtils jwtUtils;
+    private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
-//
+
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt = getTokenFromRequest(request);
-        if (jwt != null && jwtUtils.validateToken(jwt)) {
-            User user = userRepository.findUserByEmail(jwtUtils.getWordForToken(jwt));
+        if (jwt != null && jwtUtil.validateToken(jwt)) {
+            User user = userRepository.findUserByEmail(jwtUtil.getWordForToken(jwt));
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user,
                     null, new ArrayList<>());

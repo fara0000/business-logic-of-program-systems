@@ -11,7 +11,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 @Component
-public class JwtUtils {
+public class JwtUtil {
 
     @Value("@{spring.hikari.jwt.secret}")
     private String jwtSecret;

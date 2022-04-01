@@ -1,4 +1,5 @@
 package backend.entities;
+
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +30,9 @@ public class User {
 
     @Column(name = "age")
     private String age;
+
+    @Column(name = "role")
+    private Role role;
 
     @Column(name = "token")
     private String token;

@@ -1,4 +1,4 @@
-package backend.error.dto;
+package backend.exceptions.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

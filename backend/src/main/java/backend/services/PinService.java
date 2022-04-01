@@ -4,17 +4,15 @@ import backend.dto.requests.PinRequest;
 import backend.entities.Board;
 import backend.entities.Pin;
 import backend.entities.User;
-import backend.exception.ServiceDataBaseException;
+import backend.exceptions.ServiceDataBaseException;
 import backend.repositories.BoardRepository;
 import backend.repositories.PinRepository;
 import backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Slf4j
 @Service

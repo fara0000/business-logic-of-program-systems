@@ -1,6 +1,6 @@
-package backend.error;
+package backend.exceptions;
 
-import backend.error.dto.ApplicationErrorDto;
+import backend.exceptions.dto.ApplicationErrorDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +13,8 @@ public enum ErrorEnum {
     ACCESS_DENIED("Недостаточно прав для доступа к ресурсу"),
     HANDLER_NOT_FOUND("HANDLER_NOT_FOUND"),
     UNKNOWN_ERROR("Неизвестная ошибка сервера"),
-    SERVICE_UNAVAILABLE("Сервис недоступен");
+    SERVICE_UNAVAILABLE("Сервис недоступен"),
+    UNAUTHORIZED_EXCEPTION("Неверные учетные данные пользователя");
 
     /**
      * Сообщение ошибки.
