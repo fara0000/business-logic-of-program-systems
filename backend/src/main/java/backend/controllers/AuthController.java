@@ -3,31 +3,26 @@ package backend.controllers;
 import backend.dto.mappers.UserMapper;
 import backend.dto.requests.LoginRequest;
 import backend.dto.requests.UserDto;
-import backend.dto.responses.LoginDto;
 import backend.dto.responses.LoginResponse;
-import backend.entities.User;
 import backend.repositories.UserRepository;
-import backend.security.JwtUtils;
 import backend.services.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
-    public AuthController(UserService userService, UserMapper userMapper, UserRepository userRepository) {
-        this.userService = userService;
-        this.userMapper = userMapper;
-        this.userRepository = userRepository;
-    }
 
     @RequestMapping(value = "/register", consumes = "application/json", produces = "application/json", method = {RequestMethod.OPTIONS, RequestMethod.POST})
     public ResponseEntity<String> register(@Valid @RequestBody UserDto user, BindingResult result) {
@@ -62,6 +57,7 @@ public class AuthController {
 
             LoginResponse loginResponse = userService.login(loginRequest);
             return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+
         } catch (Exception e) {
             log.error("Unexpected error {}", e.getMessage());
             return new ResponseEntity<>("Неверные учетные данные пользователя", HttpStatus.BAD_REQUEST);
