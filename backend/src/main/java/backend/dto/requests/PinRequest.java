@@ -11,4 +11,5 @@ public class PinRequest {
     private String alt_text;
     private String link;
     private Long userId;
+    private String fileName;
 }

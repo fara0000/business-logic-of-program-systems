@@ -28,8 +28,12 @@ public class Board {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "board")
     private List<Pin> pins = new ArrayList<>();
 
+    @JoinColumn(name = "user_id")
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private User user;
+
+    @Column(name = "is_blocked")
+    private boolean is_blocked;
 
     public void addPinToBoard(Pin pin) {
         pin.setBoard(this);

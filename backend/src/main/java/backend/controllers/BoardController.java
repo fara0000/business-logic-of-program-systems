@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.*;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +43,7 @@ public class BoardController {
      */
 
     @RequestMapping(value = "/pin-builder/create-board", method = {RequestMethod.OPTIONS, RequestMethod.POST})
-    public ResponseEntity<String> makeBoard(@Valid @RequestBody BoardRequest board, BindingResult result) {
+    public ResponseEntity<String> makeBoard(@Valid @RequestBody BoardRequest board, BindingResult result) throws HeuristicRollbackException, SystemException, HeuristicMixedException, NotSupportedException, RollbackException {
         log.info("POST request to create new board {}", board);
 
         if (result.hasErrors()) {
@@ -50,7 +51,7 @@ public class BoardController {
             return new ResponseEntity<>("Board's name cannot be empty", HttpStatus.BAD_REQUEST);
         }
 
-        if (!boardService.findBoard(board.getName())) {
+        if (!boardService.findBoard(board.getName(),board.getUserId())) {
             log.info("Board name is not unique");
             return new ResponseEntity<>("Board name must be unique", HttpStatus.BAD_REQUEST);
         }

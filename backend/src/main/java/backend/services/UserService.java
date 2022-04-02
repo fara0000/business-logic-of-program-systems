@@ -8,7 +8,6 @@ import backend.dto.responses.LoginResponse;
 import backend.models.Role;
 import backend.entities.User;
 import backend.exceptions.ApplicationException;
-import backend.exceptions.ServiceDataBaseException;
 import backend.exceptions.ErrorEnum;
 import backend.repositories.UserRepository;
 import backend.security.JwtUtil;
@@ -52,7 +51,7 @@ public class UserService {
             userRepository.save(user);
         } catch (Exception e) {
             log.error("Unexpected Error {}", e.getMessage());
-            new ServiceDataBaseException();
+            new ApplicationException(ErrorEnum.SERVICE_DATA_BASE_EXCEPTION.createApplicationError());
         }
 
         return true;

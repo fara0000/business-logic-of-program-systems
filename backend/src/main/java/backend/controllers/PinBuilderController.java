@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
+import javax.transaction.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,6 @@ public class PinBuilderController {
 
     private final static int MBYTE_20 = 20971520;
 
-    private static Map<Long, String> photoMap = new HashMap<>();
 
     /**
      * PIN
@@ -38,9 +37,8 @@ public class PinBuilderController {
      * creating Pin
      */
 
-//    @Transactional
     @RequestMapping(value = "/pin-builder", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> makePin(@RequestBody PinRequest pin) throws IOException {
+    public ResponseEntity<String> makePin(@RequestBody PinRequest pin) throws IOException, SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
         log.info("POST request to create new pin {}", pin);
 
         if (pin.getNameOfBoard().isEmpty() || pin.getNameOfBoard() == null) {
@@ -50,29 +48,20 @@ public class PinBuilderController {
                             "if there are no boards, create a new one.", HttpStatus.BAD_REQUEST);
         }
 
-        if (boardService.findBoard(pin.getNameOfBoard())) {
+        if (boardService.findBoard(pin.getNameOfBoard(), pin.getUserId())) {
             log.info("Selected board does not exist.");
             return new ResponseEntity<>
                     ("Selected board does not exist", HttpStatus.BAD_REQUEST);
         }
 
-        if (photoMap.containsKey(pin.getUserId()) || photoMap.get(pin.getUserId()).isEmpty()) {
-            log.info("Photo is not uploaded" + photoMap.get(Long.getLong(pin.getUserId().toString())));
+        if (pin.getFileName() == null || pin.getFileName().trim().isEmpty() || findPhoto()) {
+            log.info("Photo is not uploaded");
             return new ResponseEntity<>
                     ("Photo is not uploaded, please, upload photo ", HttpStatus.BAD_REQUEST);
         }
 
-        String file_name = photoMap.get(Long.getLong(pin.getUserId().toString()));
-        byte[] bytes;
+        pinService.createPin(pin);
 
-        try {
-            bytes = getPhoto(file_name);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error: there is some problem with your photo", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        pinService.createPin(pin, file_name, bytes);
-        photoMap.put(pin.getUserId(), "");
         log.info("Pin {} was successfully created!", pin);
         return new ResponseEntity<>("Pin was created", HttpStatus.CREATED);
     }
@@ -98,9 +87,8 @@ public class PinBuilderController {
             return new ResponseEntity<>("Error: photo wasn't upload", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        photoMap.put(userId, file_name);
         log.info("Photo has been uploaded");
-        return new ResponseEntity<>("Photo has been uploaded", HttpStatus.CREATED);
+        return new ResponseEntity<>(file_name, HttpStatus.CREATED);
     }
 
 
@@ -143,4 +131,9 @@ public class PinBuilderController {
         return buff;
 
     }
+
+    private boolean findPhoto() {
+        return false;
+    }
+
 }

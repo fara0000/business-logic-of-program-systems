@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,17 +18,6 @@ public class Pin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    /**
-     * photo's service information
-     */
-
-    @Column(name = "originalFileName")
-    private String originalFileName;
-
-    /**
-     * pin's basic information
-     */
 
     @Column(name = "name")
     private String name;
@@ -45,4 +36,14 @@ public class Pin {
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Board board;
+
+    @OneToOne(mappedBy = "pin")
+    private Photo photo;
+
+    @Column(name = "is_blocked")
+    private boolean is_blocked;
+
+
+
+
 }
