@@ -29,7 +29,7 @@ public class AdminControlService {
     private PlatformTransactionManager transactionManager;
 
 
-    public void blockUserPin(Long pinId) {
+    public void blockUserPin(Long pinId) throws Exception {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setName("pinBlockTx");
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);

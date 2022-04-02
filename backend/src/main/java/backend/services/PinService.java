@@ -1,6 +1,7 @@
 package backend.services;
 
 import backend.dto.requests.PinRequest;
+import backend.dto.responses.PinWithPhotoResponse;
 import backend.entities.Board;
 import backend.entities.Photo;
 import backend.entities.Pin;
@@ -22,6 +23,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.transaction.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class PinService {
     @Qualifier("transactionManager")
     private PlatformTransactionManager transactionManager;
 
-    public void createPin(PinRequest pinRequest) throws IOException, SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
+    public void createPin(PinRequest pinRequest) throws Exception {
 
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setName("pinTx");
@@ -103,15 +105,16 @@ public class PinService {
         transactionManager.commit(status);
     }
 
-    public List<Pin> findUserPins(Long id) {
+    public List<PinWithPhotoResponse> findUserPins(Long id) {
         if (userService.findUser(id)) {
             return Collections.emptyList();
         }
-        return pinRepository.findAllByUser_Id(id);
+        return pinToDTO(pinRepository.findAllByUser_Id(id));
     }
 
-    public List<Pin> findBoardPins(Long id) {
-       return pinRepository.findAllByBoard_Id(id);
+
+    public List<PinWithPhotoResponse> findBoardPins(Long id) {
+        return pinToDTO(pinRepository.findAllByBoard_Id(id));
     }
 
 
@@ -133,5 +136,19 @@ public class PinService {
         return photo;
     }
 
+    private List<PinWithPhotoResponse> pinToDTO(List<Pin> pins) {
 
+        List<PinWithPhotoResponse> photos = new ArrayList<>();
+        for (Pin pin : pins) {
+            PinWithPhotoResponse photo = new PinWithPhotoResponse();
+            photo.setId(pin.getId());
+            photo.setName(pin.getName());
+            photo.setDescription(pin.getDescription());
+            photo.setAltText(pin.getAltText());
+            photo.setLink(pin.getLink());
+            photo.setPhoto(pin.getPhoto().getOriginalFileName());
+            photos.add(photo);
+        }
+        return photos;
+    }
 }

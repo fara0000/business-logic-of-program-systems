@@ -2,6 +2,7 @@ package backend.controllers;
 
 
 import backend.dto.requests.PinRequest;
+import backend.dto.responses.PinWithPhotoResponse;
 import backend.entities.Board;
 import backend.entities.Pin;
 import backend.services.BoardService;
@@ -44,7 +45,7 @@ public class PinBuilderController {
      */
 
     @RequestMapping(value = "/pin-builder", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> makePin(@RequestBody PinRequest pin) throws IOException, SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
+    public ResponseEntity<String> makePin(@RequestBody PinRequest pin) throws Exception {
         log.info("POST request to create new pin {}", pin);
 
         if (pin.getBoard_id() == null) {
@@ -76,18 +77,16 @@ public class PinBuilderController {
     /**
      * finding all user's pin
      */
-
     @RequestMapping(value = "/pin-builder/find-user-pin", method = RequestMethod.GET)
-    public List<Pin> getAllUserPin(@RequestParam Long userID) {
+    public List<PinWithPhotoResponse> getAllUserPin(@RequestParam Long userID) {
         return pinService.findUserPins(userID);
     }
 
     /**
-     * finding all pin from board
+     * get all pins of one board
      */
-
     @RequestMapping(value = "/pin-builder/find-board-pin", method = RequestMethod.GET)
-    public List<Pin> getAllBoardPin(@RequestParam Long boardId) {
+    public List<PinWithPhotoResponse> getAllBoardPin(@RequestParam Long boardId) {
         return pinService.findBoardPins(boardId);
     }
 
@@ -116,11 +115,6 @@ public class PinBuilderController {
         return new ResponseEntity<>(file_name, HttpStatus.CREATED);
     }
 
-    /**
-     * get all pins of one board
-    */
-
-
 
     private String generateFileName(String name, String type) {
         String[] ct = type.split("/");
@@ -128,7 +122,7 @@ public class PinBuilderController {
         return new StringBuilder().append(name).append(".").append(ct[1]).toString();
     }
 
-    private synchronized boolean putPhoto(String name, MultipartFile file) {
+    public synchronized boolean putPhoto(String name, MultipartFile file) {
         boolean flag = false;
         try {
             byte[] bytes = file.getBytes();
@@ -143,7 +137,7 @@ public class PinBuilderController {
         return flag;
     }
 
-    private synchronized byte[] getPhoto(String name) {
+    public synchronized byte[] getPhoto(String name) {
         byte[] buff = new byte[MBYTE_20];
         try {
             File file = new File("user_photos/" + name);

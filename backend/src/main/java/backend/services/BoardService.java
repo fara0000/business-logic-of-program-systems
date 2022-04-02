@@ -16,6 +16,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.transaction.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Slf4j
@@ -29,7 +31,7 @@ public class BoardService {
 
     private PlatformTransactionManager transactionManager;
 
-    public Long createBoard(BoardRequest boardRequest) throws SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
+    public Long createBoard(BoardRequest boardRequest) throws Exception {
         Long result;
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setName("boardTx");
@@ -87,4 +89,12 @@ public class BoardService {
         return boardRepository.findBoardsByIdAndUser_Id(id, userId) == null;
     }
 
+    public List<String> findAllUserBoards(Long userId) {
+        List<Board> boards = boardRepository.findAllByUser_Id(userId);
+        List<String> names = new ArrayList<>();
+        for (Board board : boards) {
+            names.add(board.getName());
+        }
+        return names;
+    }
 }
