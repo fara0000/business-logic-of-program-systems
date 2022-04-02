@@ -91,6 +91,11 @@ public class PinBuilderController {
         return new ResponseEntity<>(file_name, HttpStatus.CREATED);
     }
 
+    /**
+     * get all pins of one board
+    */
+
+
 
     private String generateFileName(String name, String type) {
         String[] ct = type.split("/");

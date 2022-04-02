@@ -87,7 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private static final String[] ADMIN_ACCESS = {
-        //endpoints for admin
+        "/admin/**"
     };
 
     private static final String[] USER_ACCESS = {

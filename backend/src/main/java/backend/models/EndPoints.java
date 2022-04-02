@@ -13,4 +13,7 @@ public interface EndPoints {
         String LOGIN = "/login";
         String REGISTER = "/register";
     }
+    interface Admin {
+        String GET_ALL_USERS = "/users";
+    }
 }
