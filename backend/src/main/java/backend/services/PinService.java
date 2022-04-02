@@ -67,7 +67,7 @@ public class PinService {
              * загружаем пин в базу
              */
 
-            Pin pin = toPinEntity(pinRequest);
+            Pin pin = toPinEntity(pinRequest, photo);
 
             Board board = boardRepository.
                     findBoardsByIdAndUser_Id(pinRequest.getBoard_id(), pinRequest.getUserId());
@@ -115,13 +115,14 @@ public class PinService {
     }
 
 
-    private Pin toPinEntity(PinRequest pinRequest) throws IOException {
+    private Pin toPinEntity(PinRequest pinRequest, Photo photo) throws IOException {
         Pin pin = new Pin();
         pin.setName(pinRequest.getName());
         pin.setDescription(pinRequest.getDescription());
         pin.setAltText(pinRequest.getAlt_text());
         pin.setLink(pinRequest.getLink());
         pin.set_blocked(false);
+        pin.setPhoto(photo);
 
         return pin;
     }
