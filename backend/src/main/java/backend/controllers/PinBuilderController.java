@@ -2,8 +2,11 @@ package backend.controllers;
 
 
 import backend.dto.requests.PinRequest;
+import backend.entities.Board;
+import backend.entities.Pin;
 import backend.services.BoardService;
 import backend.services.PinService;
+import backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.*;
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,6 +29,8 @@ public class PinBuilderController {
     private final PinService pinService;
 
     private final BoardService boardService;
+
+    private final UserService userService;
 
     private final static int MBYTE_20 = 20971520;
 
@@ -41,14 +47,14 @@ public class PinBuilderController {
     public ResponseEntity<String> makePin(@RequestBody PinRequest pin) throws IOException, SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
         log.info("POST request to create new pin {}", pin);
 
-        if (pin.getNameOfBoard().isEmpty() || pin.getNameOfBoard() == null) {
+        if (pin.getBoard_id() == null) {
             log.info("Validation Error - no board");
             return new ResponseEntity<>
                     ("The board must be specified, " +
                             "if there are no boards, create a new one.", HttpStatus.BAD_REQUEST);
         }
 
-        if (boardService.findBoard(pin.getNameOfBoard(), pin.getUserId())) {
+        if (boardService.findBoardById(pin.getBoard_id(), pin.getUserId())) {
             log.info("Selected board does not exist.");
             return new ResponseEntity<>
                     ("Selected board does not exist", HttpStatus.BAD_REQUEST);
@@ -64,6 +70,25 @@ public class PinBuilderController {
 
         log.info("Pin {} was successfully created!", pin);
         return new ResponseEntity<>("Pin was created", HttpStatus.CREATED);
+    }
+
+
+    /**
+     * finding all user's pin
+     */
+
+    @RequestMapping(value = "/pin-builder/find-user-pin", method = RequestMethod.GET)
+    public List<Pin> getAllUserPin(@RequestParam Long userID) {
+        return pinService.findUserPins(userID);
+    }
+
+    /**
+     * finding all pin from board
+     */
+
+    @RequestMapping(value = "/pin-builder/find-board-pin", method = RequestMethod.GET)
+    public List<Pin> getAllBoardPin(@RequestParam Long boardId) {
+        return pinService.findBoardPins(boardId);
     }
 
     /**

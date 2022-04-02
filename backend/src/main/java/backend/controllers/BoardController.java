@@ -51,12 +51,15 @@ public class BoardController {
             return new ResponseEntity<>("Board's name cannot be empty", HttpStatus.BAD_REQUEST);
         }
 
-        if (!boardService.findBoard(board.getName(),board.getUserId())) {
+        if (!boardService.findBoard(board.getName(), board.getUserId())) {
             log.info("Board name is not unique");
             return new ResponseEntity<>("Board name must be unique", HttpStatus.BAD_REQUEST);
         }
-        boardService.createBoard(board);
+
+        Long res = boardService.createBoard(board);
+
         log.info("Board {} was successfully created!", board);
-        return new ResponseEntity<>("Board was created", HttpStatus.CREATED);
+
+        return new ResponseEntity<>(res.toString(), HttpStatus.CREATED);
     }
 }

@@ -29,8 +29,8 @@ public class BoardService {
 
     private PlatformTransactionManager transactionManager;
 
-    public void createBoard(BoardRequest boardRequest) throws SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
-
+    public Long createBoard(BoardRequest boardRequest) throws SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
+        Long result;
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setName("boardTx");
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -52,6 +52,8 @@ public class BoardService {
                 new ApplicationException(ErrorEnum.SERVICE_DATA_BASE_EXCEPTION.createApplicationError());
             }
 
+            result = board.getId();
+
             log.info("create new board");
 
             /**
@@ -66,18 +68,23 @@ public class BoardService {
         }
 
         transactionManager.commit(status);
+
+        return result;
     }
 
     private Board toBoardEntity(BoardRequest boardRequest) {
         Board board = new Board();
         board.setName(boardRequest.getName());
-        board.setPublic(boardRequest.isPublic());
         board.set_blocked(false);
         return board;
     }
 
     public boolean findBoard(String name, Long userId) {
         return boardRepository.findBoardsByNameAndUser_Id(name, userId) == null;
+    }
+
+    public boolean findBoardById(Long id, Long userId) {
+        return boardRepository.findBoardsByIdAndUser_Id(id, userId) == null;
     }
 
 }

@@ -35,6 +35,10 @@ public class UserService {
         return userRepository.findUserByEmail(email) != null;
     }
 
+    public boolean findUser(Long id){
+        return userRepository.findUserById(id) != null;
+    }
+
     public boolean saveMember(UserDto userDto) {
         if (checkUser(userDto.getEmail())) {
             return false;

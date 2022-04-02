@@ -22,6 +22,8 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.transaction.*;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -32,6 +34,7 @@ public class PinService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
+    private final UserService userService;
     private final AdminControlService adminControlService;
 
     @Qualifier("transactionManager")
@@ -67,7 +70,7 @@ public class PinService {
             Pin pin = toPinEntity(pinRequest);
 
             Board board = boardRepository.
-                    findBoardsByNameAndUser_Id(pinRequest.getNameOfBoard(), pinRequest.getUserId());
+                    findBoardsByIdAndUser_Id(pinRequest.getBoard_id(), pinRequest.getUserId());
 
             User user = userRepository.findUserById(pinRequest.getUserId());
 
@@ -100,6 +103,17 @@ public class PinService {
         transactionManager.commit(status);
     }
 
+    public List<Pin> findUserPins(Long id) {
+        if (userService.findUser(id)) {
+            return Collections.emptyList();
+        }
+        return pinRepository.findAllByUser_Id(id);
+    }
+
+    public List<Pin> findBoardPins(Long id) {
+       return pinRepository.findAllByBoard_Id(id);
+    }
+
 
     private Pin toPinEntity(PinRequest pinRequest) throws IOException {
         Pin pin = new Pin();
@@ -117,5 +131,6 @@ public class PinService {
         photo.setOriginalFileName(file_name);
         return photo;
     }
+
 
 }
