@@ -5,7 +5,7 @@ import backend.dto.requests.LoginRequest;
 import backend.dto.requests.UserDto;
 import backend.dto.responses.LoginDto;
 import backend.dto.responses.LoginResponse;
-import backend.entities.Role;
+import backend.models.Role;
 import backend.entities.User;
 import backend.exceptions.ApplicationException;
 import backend.exceptions.ErrorEnum;
