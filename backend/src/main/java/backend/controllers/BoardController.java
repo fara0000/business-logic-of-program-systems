@@ -34,8 +34,8 @@ public class BoardController {
      */
 
     @RequestMapping(value = "/pin-builder/find-boards", method = RequestMethod.GET)
-    public List<Board> getAllBoards(@RequestParam Long userID) {
-        return boardRepository.findAllByUser_Id(userID);
+    public List<String> getAllBoards(@RequestParam Long userID) {
+        return boardService.findAllUserBoards(userID);
     }
 
     /**
@@ -43,7 +43,7 @@ public class BoardController {
      */
 
     @RequestMapping(value = "/pin-builder/create-board", method = {RequestMethod.OPTIONS, RequestMethod.POST})
-    public ResponseEntity<String> makeBoard(@Valid @RequestBody BoardRequest board, BindingResult result) throws HeuristicRollbackException, SystemException, HeuristicMixedException, NotSupportedException, RollbackException {
+    public ResponseEntity<String> makeBoard(@Valid @RequestBody BoardRequest board, BindingResult result) throws Exception{
         log.info("POST request to create new board {}", board);
 
         if (result.hasErrors()) {
@@ -51,12 +51,15 @@ public class BoardController {
             return new ResponseEntity<>("Board's name cannot be empty", HttpStatus.BAD_REQUEST);
         }
 
-        if (!boardService.findBoard(board.getName(),board.getUserId())) {
+        if (!boardService.findBoard(board.getName(), board.getUserId())) {
             log.info("Board name is not unique");
             return new ResponseEntity<>("Board name must be unique", HttpStatus.BAD_REQUEST);
         }
-        boardService.createBoard(board);
+
+        Long res = boardService.createBoard(board);
+
         log.info("Board {} was successfully created!", board);
-        return new ResponseEntity<>("Board was created", HttpStatus.CREATED);
+
+        return new ResponseEntity<>(res.toString(), HttpStatus.CREATED);
     }
 }

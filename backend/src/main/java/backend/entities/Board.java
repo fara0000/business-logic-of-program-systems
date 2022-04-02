@@ -22,9 +22,6 @@ public class Board {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "private")
-    private boolean isPublic;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "board")
     private List<Pin> pins = new ArrayList<>();
 

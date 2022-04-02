@@ -33,6 +33,9 @@ public class User {
     @Column(name = "role")
     private Role role;
 
+    @Column(name = "is_blocked")
+    private boolean is_blocked;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Pin> pins = new ArrayList<>();
 

@@ -10,7 +10,6 @@ import org.springframework.security.authentication.jaas.AbstractJaasAuthenticati
 import org.springframework.security.authentication.jaas.AuthorityGranter;
 import org.springframework.security.authentication.jaas.DefaultJaasAuthenticationProvider;
 import org.springframework.security.authentication.jaas.memory.InMemoryConfiguration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.security.auth.login.AppConfigurationEntry;
 import java.util.HashMap;

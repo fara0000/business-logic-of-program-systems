@@ -23,6 +23,9 @@ public class AuthController {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
+    /**
+     * register user
+     */
 
     @RequestMapping(value = "/register", consumes = "application/json", produces = "application/json", method = {RequestMethod.OPTIONS, RequestMethod.POST})
     public ResponseEntity<String> register(@Valid @RequestBody UserDto user, BindingResult result) {
@@ -44,6 +47,10 @@ public class AuthController {
         }
     }
 
+    /**
+     * login user
+     */
+
     @RequestMapping(value = "/login", consumes = "application/json", method = {RequestMethod.OPTIONS, RequestMethod.POST})
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, BindingResult bindingResult) {
         log.debug(String.valueOf(loginRequest));
@@ -52,7 +59,7 @@ public class AuthController {
 
             if (bindingResult.hasErrors()) {
                 log.error("Validation error");
-                return new ResponseEntity<>("Ошибка валидации", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Validation error", HttpStatus.BAD_REQUEST);
             }
 
             LoginResponse loginResponse = userService.login(loginRequest);
@@ -60,7 +67,7 @@ public class AuthController {
 
         } catch (Exception e) {
             log.error("Unexpected error {}", e.getMessage());
-            return new ResponseEntity<>("Неверные учетные данные пользователя", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Invalid user credentials", HttpStatus.BAD_REQUEST);
         }
     }
 }

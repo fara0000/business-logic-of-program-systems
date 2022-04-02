@@ -1,15 +1,13 @@
-package backend.dto.requests;
+package backend.dto.responses;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-
 @Data
-public class PinRequest {
+public class PinWithPhotoResponse {
+    private Long id;
     private String name;
-    private Long board_id;
     private String description;
-    private String alt_text;
+    private String altText;
     private String link;
-    private Long userId;
-    private String fileName;
+    private String photo;
 }
