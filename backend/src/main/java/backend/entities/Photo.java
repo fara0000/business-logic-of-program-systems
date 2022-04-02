@@ -22,7 +22,4 @@ public class Photo {
     @Column(name = "originalFileName")
     private String originalFileName;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    private Pin pin;
-
 }

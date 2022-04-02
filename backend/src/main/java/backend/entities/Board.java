@@ -19,7 +19,7 @@ public class Board {
     private Long id;
 
     @NotEmpty
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "private")

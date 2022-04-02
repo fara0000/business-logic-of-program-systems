@@ -37,13 +37,11 @@ public class Pin {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Board board;
 
-    @OneToOne(mappedBy = "pin")
+    @OneToOne()
     private Photo photo;
 
     @Column(name = "is_blocked")
     private boolean is_blocked;
-
-
 
 
 }
