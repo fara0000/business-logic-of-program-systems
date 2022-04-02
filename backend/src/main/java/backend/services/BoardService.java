@@ -7,17 +7,12 @@ import backend.exceptions.ApplicationException;
 import backend.exceptions.ErrorEnum;
 import backend.repositories.BoardRepository;
 import backend.repositories.UserRepository;
-import bitronix.tm.BitronixTransaction;
-import bitronix.tm.BitronixTransactionManager;
-import bitronix.tm.TransactionManagerServices;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.transaction.*;
