@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    Board findBoardsByName(String name);
+
+    Board findBoardsByNameAndUser_Id(String name, Long id);
 
     List<Board> findAllByUser_Id(Long id);
 }
