@@ -2,16 +2,25 @@ package backend.services;
 
 import backend.dto.requests.PinRequest;
 import backend.entities.Board;
+import backend.entities.Photo;
 import backend.entities.Pin;
 import backend.entities.User;
-import backend.exceptions.ServiceDataBaseException;
+import backend.exceptions.ApplicationException;
+import backend.exceptions.ErrorEnum;
 import backend.repositories.BoardRepository;
+import backend.repositories.PhotoRepository;
 import backend.repositories.PinRepository;
 import backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import javax.transaction.*;
 import java.io.IOException;
 
 @Slf4j
@@ -19,47 +28,94 @@ import java.io.IOException;
 @AllArgsConstructor
 public class PinService {
     private final PinRepository pinRepository;
+    private final PhotoRepository photoRepository;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
-    public void createPin(PinRequest pinRequest, String file_name, byte[] bytes) throws IOException, ServiceDataBaseException {
+    private final AdminControlService adminControlService;
 
-        Pin pin = toPinEntity(pinRequest, file_name, bytes);
+    @Qualifier("transactionManager")
+    private PlatformTransactionManager transactionManager;
 
-        Board board = boardRepository.
-                findBoardsByName(pinRequest.getNameOfBoard());
-        User user = userRepository.findUserById(pinRequest.getUserId());
+    public void createPin(PinRequest pinRequest) throws IOException, SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
 
-        pin.setBoard(board);
-        pin.setUser(user);
-        user.addPinToUser(pin);
-        board.addPinToBoard(pin);
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setName("pinTx");
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = transactionManager.getTransaction(def);
 
         try {
-            pinRepository.save(pin);
-        } catch (Exception e) {
-            log.error("Unexpected Error {}", e.getMessage());
-            new ServiceDataBaseException();
+
+
+            /**
+             * загружаем фотографию в базу
+             */
+
+            Photo photo = toPhotoEntity(pinRequest.getFileName());
+
+            try {
+                photo = photoRepository.save(photo);
+            } catch (Exception e) {
+                log.error("Unexpected Error {}", e.getMessage());
+                new ApplicationException(ErrorEnum.SERVICE_DATA_BASE_EXCEPTION.createApplicationError());
+            }
+
+            /**
+             * загружаем пин в базу
+             */
+
+            Pin pin = toPinEntity(pinRequest);
+
+            Board board = boardRepository.
+                    findBoardsByNameAndUser_Id(pinRequest.getNameOfBoard(), pinRequest.getUserId());
+
+            User user = userRepository.findUserById(pinRequest.getUserId());
+
+            pin.setBoard(board);
+            pin.setUser(user);
+            pin.setPhoto(photo);
+            user.addPinToUser(pin);
+            board.addPinToBoard(pin);
+
+            try {
+                pin = pinRepository.save(pin);
+            } catch (Exception e) {
+                log.error("Unexpected Error {}", e.getMessage());
+                new ApplicationException(ErrorEnum.SERVICE_DATA_BASE_EXCEPTION.createApplicationError());
+            }
+
+            log.info("created new pin");
+
+            /**
+             * отправляем пин на проверку
+             */
+
+            adminControlService.sendPinToCheck(pin);
+
+        } catch (Exception ex) {
+            transactionManager.rollback(status);
+            throw ex;
         }
 
-        log.info("created new pin");
-
+        transactionManager.commit(status);
     }
 
 
-    private Pin toPinEntity(PinRequest pinRequest, String file_name, byte[] bytes) throws IOException {
+    private Pin toPinEntity(PinRequest pinRequest) throws IOException {
         Pin pin = new Pin();
-        //      photo's service information
-        pin.setOriginalFileName(file_name);
-        pin.setBytes(bytes);
-        //      pin's basic information
         pin.setName(pinRequest.getName());
         pin.setDescription(pinRequest.getDescription());
         pin.setAltText(pinRequest.getAlt_text());
         pin.setLink(pinRequest.getLink());
+        pin.set_blocked(false);
 
         return pin;
     }
 
+    private Photo toPhotoEntity(String file_name) {
+        Photo photo = new Photo();
+        photo.setOriginalFileName(file_name);
+        return photo;
+    }
 
 }

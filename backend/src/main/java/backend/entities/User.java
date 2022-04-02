@@ -34,9 +34,6 @@ public class User {
     @Column(name = "role")
     private Role role;
 
-    @Column(name = "token")
-    private String token;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Pin> pins = new ArrayList<>();
 
@@ -52,4 +49,5 @@ public class User {
         board.setUser(this);
         boards.add(board);
     }
+
 }

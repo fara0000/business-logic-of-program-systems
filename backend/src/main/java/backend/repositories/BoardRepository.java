@@ -5,5 +5,5 @@ import backend.entities.Pin;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    Board findBoardsByName(String name);
+    Board findBoardsByNameAndUser_Id(String name, Long userId);
 }

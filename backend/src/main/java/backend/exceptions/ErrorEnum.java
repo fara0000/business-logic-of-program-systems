@@ -14,7 +14,8 @@ public enum ErrorEnum {
     HANDLER_NOT_FOUND("HANDLER_NOT_FOUND"),
     UNKNOWN_ERROR("Неизвестная ошибка сервера"),
     SERVICE_UNAVAILABLE("Сервис недоступен"),
-    UNAUTHORIZED_EXCEPTION("Неверные учетные данные пользователя");
+    UNAUTHORIZED_EXCEPTION("Неверные учетные данные пользователя"),
+    SERVICE_DATA_BASE_EXCEPTION("Ошибка при сохранении в базу данных");
 
     /**
      * Сообщение ошибки.
