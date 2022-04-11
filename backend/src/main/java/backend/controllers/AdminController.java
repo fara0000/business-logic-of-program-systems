@@ -41,7 +41,7 @@ public class AdminController {
     @RequestMapping(value = "/block-user", method = RequestMethod.PUT)
     public ResponseEntity<String> blockUser(@Valid @RequestBody Long userId) throws Exception {
         adminService.blockUser(userId);
-        return new ResponseEntity<>("User {} is blocked", HttpStatus.OK);
+        return new ResponseEntity<>("User " + userId + " is blocked", HttpStatus.OK);
     }
 
     /**
@@ -51,7 +51,7 @@ public class AdminController {
     @RequestMapping(value = "/block-pin", method = RequestMethod.PUT)
     public ResponseEntity<String> blockUserPin(@Valid @RequestBody Long pinId) throws Exception {
         adminService.blockUserPin(pinId);
-        return new ResponseEntity<>("Pin {} is blocked", HttpStatus.OK);
+        return new ResponseEntity<>("Pin " + pinId + " is blocked", HttpStatus.OK);
     }
 
     /**
@@ -61,7 +61,7 @@ public class AdminController {
     @RequestMapping(value = "/block-board", method = RequestMethod.PUT)
     public ResponseEntity<String> blockUserBoard(@Valid @RequestBody Long boardId) throws Exception {
         adminService.blockUserBoard(boardId);
-        return new ResponseEntity<>("Board {} is blocked", HttpStatus.OK);
+        return new ResponseEntity<>("Board " + boardId + " is blocked", HttpStatus.OK);
     }
 
 
