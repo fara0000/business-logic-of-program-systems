@@ -8,13 +8,14 @@
         <version>2.6.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com</groupId>
-    <artifactId>backend</artifactId>
+
+    <groupId>com.se.blps.project</groupId>
+    <artifactId>pinmaker</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>backend</name>
-    <description>Demo project for Spring Boot</description>
+    <name>pinmaker</name>
+    <description>BLPS project for Spring boot</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
     </properties>
     <dependencies>
         <dependency>

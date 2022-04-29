@@ -35,6 +35,8 @@ public class PinBuilderController {
 
     private final static int MBYTE_20 = 20971520;
 
+    private final static String PATH_TO_FILES = "userPhotos/";
+
 
     /**
      * PIN
@@ -127,7 +129,7 @@ public class PinBuilderController {
         try {
             byte[] bytes = file.getBytes();
             BufferedOutputStream stream =
-                    new BufferedOutputStream(new FileOutputStream(("user_photos/" + name)));
+                    new BufferedOutputStream(new FileOutputStream((PATH_TO_FILES + name)));
             stream.write(bytes);
             stream.close();
             flag = true;
@@ -140,7 +142,7 @@ public class PinBuilderController {
     public synchronized byte[] getPhoto(String name) {
         byte[] buff = new byte[MBYTE_20];
         try {
-            File file = new File("user_photos/" + name);
+            File file = new File(PATH_TO_FILES + name);
             BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file));
             int bytes = stream.read(buff);
             while (bytes != -1) {
