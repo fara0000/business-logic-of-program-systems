@@ -43,7 +43,7 @@ public class UserService {
         return userRepository.findUserByEmail(email) != null;
     }
 
-    public boolean findUser(Long id){
+    public boolean findUser(Long id) {
         return userRepository.findUserById(id) != null;
     }
 
@@ -63,7 +63,7 @@ public class UserService {
             userRepository.save(user);
         } catch (Exception e) {
             log.error("Unexpected Error {}", e.getMessage());
-            new ApplicationException(ErrorEnum.SERVICE_DATA_BASE_EXCEPTION.createApplicationError());
+            throw new ApplicationException(ErrorEnum.SERVICE_DATA_BASE_EXCEPTION.createApplicationError());
         }
 
         return true;
@@ -91,7 +91,7 @@ public class UserService {
         List<User> users = userRepository.findAllUsers();
 
         List<UserResponse> usersList = new ArrayList<>();
-        for(User user: users) {
+        for (User user : users) {
             UserResponse userResponse = new UserResponse();
             userResponse.setId(user.getId());
             userResponse.setEmail(user.getEmail());
@@ -107,7 +107,7 @@ public class UserService {
         List<Board> boards = boardRepository.findAllByUser_Id(userId);
 
         List<BoardResponseDto> boardList = new ArrayList<>();
-        for(Board board: boards) {
+        for (Board board : boards) {
             BoardResponseDto boardResponseDto = new BoardResponseDto();
             boardResponseDto.setId(board.getId());
             boardResponseDto.setName(board.getName());
@@ -123,7 +123,7 @@ public class UserService {
         List<Pin> pins = pinRepository.findAllByBoard_Id(boardId);
 
         List<PinResponseDto> pinList = new ArrayList<>();
-        for(Pin pin: pins) {
+        for (Pin pin : pins) {
             PinResponseDto pinResponseDto = new PinResponseDto();
             pinResponseDto.setId(pin.getId());
             pinResponseDto.setName(pin.getName());
