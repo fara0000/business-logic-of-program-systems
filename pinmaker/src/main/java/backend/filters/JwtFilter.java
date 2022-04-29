@@ -50,15 +50,4 @@ public class JwtFilter extends OncePerRequestFilter {
         return null;
     }
 
-//    private String parseJwt(HttpServletRequest request) {
-//        String headerName = "Authorization";
-//        String prefix = "Bearer ";
-//        String headerAuth = request.getHeader(headerName);
-//
-//        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(prefix)) {
-//            return headerAuth.substring(prefix.length());
-//        }
-////        log.debug("Invalid header name or auth prefix for request to {}", request.getRequestURI());
-//        return null;
-//    }
 }

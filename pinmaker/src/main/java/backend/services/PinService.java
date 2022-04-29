@@ -39,7 +39,6 @@ public class PinService {
     private final UserService userService;
     private final AdminControlService adminControlService;
 
-    @Qualifier("transactionManager")
     private PlatformTransactionManager transactionManager;
 
     public void createPin(PinRequest pinRequest) throws Exception {
