@@ -23,8 +23,6 @@ public class MailSenderService {
     String password;
 
     public void sendEmail(NewMailDto newMailDto) throws MessagingException {
-        System.out.println(username);
-        System.out.println(password);
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
         Properties props = mailSender.getJavaMailProperties();

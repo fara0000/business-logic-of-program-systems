@@ -20,7 +20,7 @@ public class PhotoController {
 
     private final static int MBYTE_20 = 20971520;
 
-    private final static String PATH_TO_PHOTO_BUFFER = "photoBuffer";
+    private final static String PATH_TO_PHOTO_BUFFER = "photoBuffer/";
 
     /**
      * upload photo for pin - write photo to buffer

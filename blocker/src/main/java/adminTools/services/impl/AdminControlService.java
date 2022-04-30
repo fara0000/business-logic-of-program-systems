@@ -59,17 +59,15 @@ public class AdminControlService implements BlockingUtil {
             pin.set_blocked(true);
             pinRepository.save(pin);
 
+            String email = pin.getUser().getEmail();
+            jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_PIN_MAIL, email);
         } catch (Exception ex) {
             transactionManager.rollback(status);
             throw ex;
         }
 
         transactionManager.commit(status);
-        // отправляем письмо пользователью
-        Pin pin = pinRepository.getById(pinId);
-        jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_USER_MAIL, pin.getUser().getEmail());
-        jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_BOARD_MAIL, pin.getUser().getEmail());
-        jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_PIN_MAIL, pin.getUser().getEmail());
+
     }
 
     /**
@@ -107,12 +105,16 @@ public class AdminControlService implements BlockingUtil {
                 pinRepository.save(pin);
             }
 
+            String email =  board.getUser().getEmail();
+            jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_BOARD_MAIL,email);
+
         } catch (Exception ex) {
             transactionManager.rollback(status);
             throw ex;
         }
 
         transactionManager.commit(status);
+
     }
 
     /**
@@ -152,12 +154,17 @@ public class AdminControlService implements BlockingUtil {
                 pinRepository.save(pin);
             }
 
+            String email =  user.getEmail();
+            jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_USER_MAIL, email);
+
         } catch (Exception ex) {
             transactionManager.rollback(status);
             throw ex;
         }
 
         transactionManager.commit(status);
+
+
     }
 
 

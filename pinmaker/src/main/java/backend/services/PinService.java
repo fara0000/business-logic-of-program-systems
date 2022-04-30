@@ -31,8 +31,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PinService {
-    private final static String PATH_TO_PHOTO_BUFFER = "photoBuffer";
-    private final static String PATH_TO_PERMANENT_STORAGE = "userPhotos";
+    private final static String PATH_TO_PHOTO_BUFFER = "photoBuffer/";
+    private final static String PATH_TO_PERMANENT_STORAGE = "userPhotos/";
 
     private final PinRepository pinRepository;
     private final PhotoRepository photoRepository;
