@@ -55,11 +55,12 @@ public class PinService {
         try {
 
             /**
-             *  загружаем фотографию в постоянное хранилище
+             *  загружаем фотографию в постоянное хранилище и удаляем ее из буфера
              */
 
             byte[] photoByte = photoIO.getPhoto(PATH_TO_PHOTO_BUFFER, pinRequest.getFileName());
             photoIO.savePhoto(PATH_TO_PERMANENT_STORAGE, photoByte, pinRequest.getFileName());
+            photoIO.deletePhoto(PATH_TO_PHOTO_BUFFER, pinRequest.getFileName());
 
             /**
              * загружаем информацию о фотографии в базу
@@ -91,7 +92,7 @@ public class PinService {
             user.addPinToUser(pin);
             board.addPinToBoard(pin);
 
-                try {
+            try {
                 pin = pinRepository.save(pin);
             } catch (Exception e) {
                 log.error("Unexpected Error {}", e.getMessage());

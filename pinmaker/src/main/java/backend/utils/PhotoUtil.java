@@ -73,5 +73,8 @@ public class PhotoUtil {
 
     }
 
+    public void deletePhoto(String path, String name) {
+        new File(path + name).delete();
+    }
 
 }
