@@ -12,16 +12,15 @@ import backend.repositories.BoardRepository;
 import backend.repositories.PhotoRepository;
 import backend.repositories.PinRepository;
 import backend.repositories.UserRepository;
+import backend.utils.PhotoUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import javax.transaction.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +30,9 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PinService {
+    private final static String PATH_TO_PHOTO_BUFFER = "photoBuffer";
+    private final static String PATH_TO_PERMANENT_STORAGE = "userPhotos";
+
     private final PinRepository pinRepository;
     private final PhotoRepository photoRepository;
     private final BoardRepository boardRepository;
@@ -38,6 +40,8 @@ public class PinService {
 
     private final UserService userService;
     private final AdminControlService adminControlService;
+
+    private final PhotoUtil photoIO;
 
     private PlatformTransactionManager transactionManager;
 
@@ -50,9 +54,15 @@ public class PinService {
 
         try {
 
+            /**
+             *  загружаем фотографию в постоянное хранилище
+             */
+
+            byte[] photoByte = photoIO.getPhoto(PATH_TO_PHOTO_BUFFER, pinRequest.getFileName());
+            photoIO.savePhoto(PATH_TO_PERMANENT_STORAGE, photoByte, pinRequest.getFileName());
 
             /**
-             * загружаем фотографию в базу
+             * загружаем информацию о фотографии в базу
              */
 
             Photo photo = toPhotoEntity(pinRequest.getFileName());
@@ -81,7 +91,7 @@ public class PinService {
             user.addPinToUser(pin);
             board.addPinToBoard(pin);
 
-            try {
+                try {
                 pin = pinRepository.save(pin);
             } catch (Exception e) {
                 log.error("Unexpected Error {}", e.getMessage());
