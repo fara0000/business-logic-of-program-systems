@@ -62,6 +62,8 @@ public class AdminControlService implements BlockingUtil {
         transactionManager.commit(status);
         // отправляем письмо пользователью
         Pin pin = pinRepository.getById(pinId);
+        jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_USER_MAIL, pin.getUser().getEmail());
+        jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_BOARD_MAIL, pin.getUser().getEmail());
         jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_PIN_MAIL, pin.getUser().getEmail());
     }
 
