@@ -34,6 +34,7 @@ public class AdminController {
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
+
     /**
      * block user - it will block all user's pins and boards
      */

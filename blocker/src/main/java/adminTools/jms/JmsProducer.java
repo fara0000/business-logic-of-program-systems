@@ -6,10 +6,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JmsProducer {
+
     @Autowired
     private JmsTemplate jmsTemplate;
 
     public void sendMessageToQueue(String queueName, String message) {
+
         jmsTemplate.convertAndSend(queueName, message);
     }
 

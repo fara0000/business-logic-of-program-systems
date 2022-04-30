@@ -16,6 +16,7 @@ public enum ErrorEnum {
     SERVICE_UNAVAILABLE("Сервис недоступен"),
     UNAUTHORIZED_EXCEPTION("Неверные учетные данные пользователя"),
     SERVICE_DATA_BASE_EXCEPTION("Ошибка при сохранении в базу данных"),
+    SERVICE_SAVING_PHOTO_EXCEPTION("Ошибка при сохранении в фотографии"),
     OBJECT_DOES_NOT_EXIST("Объект не существует");
     /**
      * Сообщение ошибки.

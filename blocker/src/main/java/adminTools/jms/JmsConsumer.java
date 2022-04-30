@@ -7,7 +7,6 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@Slf4j
 @RequiredArgsConstructor
 public class JmsConsumer {
 
