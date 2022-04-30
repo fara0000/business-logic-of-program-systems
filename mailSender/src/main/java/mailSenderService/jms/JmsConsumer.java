@@ -2,8 +2,8 @@ package mailSenderService.jms;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mailSenderService.dto.NewEmailDto;
-import mailSenderService.services.EmailSenderService;
+import mailSenderService.dto.NewMailDto;
+import mailSenderService.services.MailSenderService;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -11,35 +11,39 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 public class JmsConsumer {
-    private final EmailSenderService emailSenderService;
+    private final MailSenderService mailSenderService;
 
     @JmsListener(destination = "blockUserMail")
     public void getMessageForBlockingUser(String message) throws Exception {
-        NewEmailDto newEmailDto = new NewEmailDto();
-        newEmailDto.setEmailTo(message);
-        newEmailDto.setSubject("Блокировка аккаунта на Pinterest");
-        newEmailDto.setMessageBody("Ваш аккаунт был заблокирован!");
+        NewMailDto newMailDto = new NewMailDto();
+        newMailDto.setEmailTo(message);
+        newMailDto.setSubject("Блокировка аккаунта на Pinmaker.com");
+        newMailDto.setMessageBody("Ваш аккаунт на Pinmaker.com был заблокирован" +
+                " в связи с тем, что выши действия угражают сообществу Pinmaker.");
 
-        emailSenderService.sendEmail(newEmailDto);
+        log.info("Mail was sent to email " + message);
+        mailSenderService.sendEmail(newMailDto);
     }
 
     @JmsListener(destination = "blockBoardMail")
     public void getMessageForBlockingBoard(String message) throws Exception {
-        NewEmailDto newEmailDto = new NewEmailDto();
-        newEmailDto.setEmailTo(message);
-        newEmailDto.setSubject("Блокировка доски на Pinterest");
-        newEmailDto.setMessageBody("Ваша доска была заблокирован!");
+        NewMailDto newMailDto = new NewMailDto();
+        newMailDto.setEmailTo(message);
+        newMailDto.setSubject("Блокировка вашей доски на Pinmaker.com");
+        newMailDto.setMessageBody("Ваша доска была заблокирована на Pinmaker.com.");
 
-        emailSenderService.sendEmail(newEmailDto);
+        log.info("Mail was sent to email " + message);
+        mailSenderService.sendEmail(newMailDto);
     }
 
     @JmsListener(destination = "blockPinMail")
     public void getMessageForBlockingPin(String message) throws Exception {
-        NewEmailDto newEmailDto = new NewEmailDto();
-        newEmailDto.setEmailTo(message);
-        newEmailDto.setSubject("Блокировка пина на Pinterest");
-        newEmailDto.setMessageBody("Ваш пин был заблокирован!");
+        NewMailDto newMailDto = new NewMailDto();
+        newMailDto.setEmailTo(message);
+        newMailDto.setSubject("Блокировка пина на Pinmaker.com");
+        newMailDto.setMessageBody("Ваш пин был заблокиров на Pinmaker.com.");
 
-        emailSenderService.sendEmail(newEmailDto);
+        log.info("Mail was sent to email " + message);
+        mailSenderService.sendEmail(newMailDto);
     }
 }

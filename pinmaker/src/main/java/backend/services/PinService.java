@@ -12,6 +12,7 @@ import backend.repositories.BoardRepository;
 import backend.repositories.PhotoRepository;
 import backend.repositories.PinRepository;
 import backend.repositories.UserRepository;
+import backend.services.adminService.impl.AdminControlService;
 import backend.utils.PhotoUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

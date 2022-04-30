@@ -7,6 +7,7 @@ import backend.exceptions.ApplicationException;
 import backend.exceptions.ErrorEnum;
 import backend.repositories.BoardRepository;
 import backend.repositories.UserRepository;
+import backend.services.adminService.impl.AdminControlService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import javax.transaction.*;
 import java.util.ArrayList;
 import java.util.List;
 

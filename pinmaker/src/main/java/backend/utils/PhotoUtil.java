@@ -13,9 +13,6 @@ import java.io.*;
 public class PhotoUtil {
 
     private final static int MBYTE_20 = 20971520;
-    private final static String PATH_TO_PHOTO_BUFFER = "photoBuffer";
-    private final static String PATH_TO_FILES = "userPhotos/";
-
 
     public synchronized void putPhoto(String path, String name, MultipartFile file) {
         try {

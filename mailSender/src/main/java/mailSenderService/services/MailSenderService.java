@@ -2,7 +2,7 @@ package mailSenderService.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mailSenderService.dto.NewEmailDto;
+import mailSenderService.dto.NewMailDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
@@ -16,13 +16,13 @@ import javax.mail.internet.MimeMessage;
 @RequiredArgsConstructor
 @Slf4j
 
-public class EmailSenderService {
+public class MailSenderService {
     @Value("${spring.mail.username}")
     String username;
     @Value("${spring.mail.password}")
     String password;
 
-    public void sendEmail(NewEmailDto newEmailDto) throws MessagingException {
+    public void sendEmail(NewMailDto newMailDto) throws MessagingException {
         System.out.println(username);
         System.out.println(password);
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -51,9 +51,9 @@ public class EmailSenderService {
 
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(username));
-        message.setRecipient(Message.RecipientType.TO, new InternetAddress(newEmailDto.getEmailTo()));
-        message.setSubject(newEmailDto.getSubject());
-        message.setText(newEmailDto.getMessageBody());
+        message.setRecipient(Message.RecipientType.TO, new InternetAddress(newMailDto.getEmailTo()));
+        message.setSubject(newMailDto.getSubject());
+        message.setText(newMailDto.getMessageBody());
 
         Transport.send(message);
     }

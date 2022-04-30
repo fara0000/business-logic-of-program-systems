@@ -1,8 +1,7 @@
 package adminTools.jms;
 
-import adminTools.services.AdminControlService;
+import adminTools.services.impl.AdminControlService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 

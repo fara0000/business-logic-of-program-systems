@@ -1,8 +1,9 @@
-package adminTools.services;
+package adminTools.services.impl;
 
 import adminTools.entities.*;
 import adminTools.jms.JmsProducer;
 import adminTools.repositories.*;
+import adminTools.services.BlockingUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,6 +34,10 @@ public class AdminControlService implements BlockingUtil {
     @Qualifier("transactionManager")
     private PlatformTransactionManager transactionManager;
 
+    /**
+     * Непосредственно блокируем в базе конкретный Pin
+     * @param pinId - id пина, который нужно заблокировать
+     */
     @Override
     public void blockUserPin(Long pinId) throws Exception {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -67,6 +72,10 @@ public class AdminControlService implements BlockingUtil {
         jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_PIN_MAIL, pin.getUser().getEmail());
     }
 
+    /**
+     * Непосредственно блокируем в базе конкретный Board и все Pins на ней
+     * @param boardId - id доски, которую нужно заблокировать
+     */
     @Override
     public void blockUserBoard(Long boardId) throws Exception {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -106,6 +115,10 @@ public class AdminControlService implements BlockingUtil {
         transactionManager.commit(status);
     }
 
+    /**
+     * Непосредственно блокируем в базе конкретного User, все его Boards и Pins на ней
+     * @param userId - id пользователя, которого нужно заблокировать
+     */
     @Override
     public void blockUser(Long userId) throws Exception {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
