@@ -1,6 +1,7 @@
 package adminTools.services;
 
 import adminTools.entities.*;
+import adminTools.jms.JmsProducer;
 import adminTools.repositories.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +19,16 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class AdminControlService implements BlockingUtil {
+    private final String QUEUE_BLOCKED_USER_MAIL = "blockUserMail";
+    private final String QUEUE_BLOCKED_BOARD_MAIL = "blockBoardMail";
+    private final String QUEUE_BLOCKED_PIN_MAIL = "blockPinMail";
+
     private final CheckPinRepository checkPinRepository;
     private final CheckBoardRepository checkBoardRepository;
     private final PinRepository pinRepository;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final JmsProducer jmsProducer;
 
     @Qualifier("transactionManager")
     private PlatformTransactionManager transactionManager;
@@ -54,7 +60,9 @@ public class AdminControlService implements BlockingUtil {
         }
 
         transactionManager.commit(status);
-
+        // отправляем письмо пользователью
+        Pin pin = pinRepository.getById(pinId);
+        jmsProducer.sendMessageToQueue(QUEUE_BLOCKED_PIN_MAIL, pin.getUser().getEmail());
     }
 
     @Override
