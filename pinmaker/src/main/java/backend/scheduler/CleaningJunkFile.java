@@ -21,8 +21,8 @@ public class CleaningJunkFile {
      * Очищаем буффер для файлов
      */
 
-    //@Scheduled(cron = "@daily")
-    @Scheduled(cron = "10 * * * * *")
+    // @Scheduled(cron = "10 * * * * *")
+    @Scheduled(cron = "@daily")
     public void removeJunkFile() {
         log.info("Scheduler started his work");
         photoUtil.clearBuffer(PATH_TO_PHOTO_BUFFER);
