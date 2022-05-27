@@ -1,0 +1,27 @@
+spring:
+  datasource:
+      url: jdbc:postgresql://localhost:5432/blps
+      username: admin_blps
+      password: 2406
+      driverClassName: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    database: postgresql
+    show-sql: true
+
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+
+jwt.secret: 'mySecret'
+
+camunda:
+  bpm:
+    admin-user:
+      id: demo
+      password: demo

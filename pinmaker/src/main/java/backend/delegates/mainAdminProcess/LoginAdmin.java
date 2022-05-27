@@ -1,4 +1,4 @@
-package backend.delegates.mainUserProcess;
+package backend.delegates.mainAdminProcess;
 
 import backend.dto.requests.LoginRequest;
 import backend.dto.responses.LoginResponse;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LoginUser implements JavaDelegate {
+public class LoginAdmin implements JavaDelegate {
 
     private final UserService userService;
 
@@ -20,23 +20,21 @@ public class LoginUser implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
         String email = (String) delegateExecution.getVariable("email");
         String password = (String) delegateExecution.getVariable("password");
-        long userId = -1;
+        long adminId = -1;
 
         try {
             LoginResponse loginResponse = userService.login(LoginRequest.builder().
                     email(email).
                     password(password).
                     build());
-            userId = loginResponse.getUser().getId();
+            adminId = loginResponse.getUser().getId();
         } catch (Exception e) {
             throw new BpmnError("Неверные учетные данные пользователя");
         }
 
-        if (userService.getUserRole(userId) == Role.ADMIN)
-            throw new BpmnError("У Администратора нет доступа к пользовательскому процессу");
+        if (userService.getUserRole(adminId) == Role.USER)
+            throw new BpmnError("У обычного пользователя нет доступа к процессам администратора.");
 
-        delegateExecution.setVariable("userId", userId);
+        delegateExecution.setVariable("adminId", adminId);
     }
-
-
 }

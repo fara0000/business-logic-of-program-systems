@@ -137,4 +137,10 @@ public class UserService {
 
         return pinList;
     }
+
+    public Role getUserRole(Long id) {
+        User user = userRepository.findUserById(id);
+        return user.getRole();
+    }
+
 }

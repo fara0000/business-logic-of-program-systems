@@ -89,6 +89,10 @@ public class BoardService {
         return boardRepository.findBoardsByIdAndUser_Id(id, userId) == null;
     }
 
+    public boolean findBoardById(Long id) {
+        return boardRepository.findBoardById(id) == null;
+    }
+
     public List<String> findAllUserBoards(Long userId) {
         List<Board> boards = boardRepository.findAllByUser_Id(userId);
         List<String> names = new ArrayList<>();
