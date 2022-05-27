@@ -47,7 +47,7 @@ public class UserService {
         return userRepository.findUserById(id) != null;
     }
 
-    public boolean saveMember(UserDto userDto) {
+    public boolean addUser(UserDto userDto) {
         if (checkUser(userDto.getEmail())) {
             return false;
         }

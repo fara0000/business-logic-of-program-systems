@@ -3,16 +3,27 @@ package backend.utils;
 import backend.exceptions.ApplicationException;
 import backend.exceptions.ErrorEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Slf4j
 public class PhotoUtil {
 
     private final static int MBYTE_20 = 20971520;
+
+    public String generateFileName(String name, String type) {
+        String[] ct = type.split("/");
+        name = (name + Math.random()).replace(".", "");
+        return new StringBuilder().append(name).append(".").append(ct[1]).toString();
+    }
+
 
     public synchronized void putPhoto(String path, String name, MultipartFile file) {
         try {
@@ -69,6 +80,25 @@ public class PhotoUtil {
         }
 
     }
+
+    public synchronized void putPhotoAcrossCamunda(String path, String name, ByteArrayInputStream inputStream) {
+        try {
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            BufferedOutputStream stream =
+                    new BufferedOutputStream(new FileOutputStream((path + name)));
+            stream.write(bytes);
+            stream.close();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new ApplicationException(ErrorEnum.SERVICE_SAVING_PHOTO_EXCEPTION.createApplicationError());
+        }
+    }
+
+    public String generateFileNameForCamunda(String name, String type) {
+        name = (name + Math.random()).replace(".", "");
+        return new StringBuilder().append(name).append(".").append(type).toString();
+    }
+
 
     public void deletePhoto(String path, String name) {
         new File(path + name).delete();
