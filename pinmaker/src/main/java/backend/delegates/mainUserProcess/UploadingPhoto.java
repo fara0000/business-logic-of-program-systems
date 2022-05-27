@@ -23,12 +23,10 @@ public class UploadingPhoto implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         ByteArrayInputStream file = (ByteArrayInputStream) delegateExecution.getVariable("photo");
-        String fileName = (String) delegateExecution.getVariable("photoName");
-        String contentType = (String) delegateExecution.getVariable("contentType");
 
         //TODO проверочки для фоточки
 
-        String newfileName = photoUtil.generateFileNameForCamunda(fileName, contentType);
+        String fileName = photoUtil.generateFileNameForCamunda();
 
         photoUtil.putPhotoAcrossCamunda(PATH_TO_PHOTO_BUFFER, fileName, file);
 

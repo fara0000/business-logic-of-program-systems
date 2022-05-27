@@ -94,9 +94,8 @@ public class PhotoUtil {
         }
     }
 
-    public String generateFileNameForCamunda(String name, String type) {
-        name = (name + Math.random()).replace(".", "");
-        return new StringBuilder().append(name).append(".").append(type).toString();
+    public String generateFileNameForCamunda() {
+        return String.valueOf(Math.random()).replace(".", "");
     }
 
 

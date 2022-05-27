@@ -15,7 +15,7 @@ public class AddingPin implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        String name = (String) delegateExecution.getVariable("name");
+        String name = (String) delegateExecution.getVariable("nameOfPin");
         Long boardId = (long) delegateExecution.getVariable("boardId");
         String description = (String) delegateExecution.getVariable("description");
         String altText = (String) delegateExecution.getVariable("altText");

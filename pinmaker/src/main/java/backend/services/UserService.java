@@ -56,7 +56,7 @@ public class UserService {
         user.setPassword(userDto.getPassword());
         user.setAge(userDto.getAge());
         user.setRole(Role.USER);
-
+        user.set_blocked(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         try {

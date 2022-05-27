@@ -16,13 +16,11 @@ public class AddingBoard implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        String name = (String) delegateExecution.getVariable("name");
-        boolean isPublic = (boolean) delegateExecution.getVariable("isPublic");
+        String name = (String) delegateExecution.getVariable("nameOfBoard");
         long userId = (long) delegateExecution.getVariable("userId");
 
         Long res = boardService.createBoard(BoardRequest.builder()
                 .name(name)
-                .isPublic(isPublic)
                 .userId(userId)
                 .build());
 
