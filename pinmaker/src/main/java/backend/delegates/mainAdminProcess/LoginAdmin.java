@@ -22,18 +22,17 @@ public class LoginAdmin implements JavaDelegate {
         String password = (String) delegateExecution.getVariable("password");
         long adminId = -1;
 
-        try {
-            LoginResponse loginResponse = userService.login(LoginRequest.builder().
-                    email(email).
-                    password(password).
-                    build());
-            adminId = loginResponse.getUser().getId();
-        } catch (Exception e) {
-            throw new BpmnError("Неверные учетные данные пользователя");
-        }
+        LoginResponse loginResponse = userService.login(LoginRequest.builder().
+                email(email).
+                password(password).
+                build());
+        adminId = loginResponse.getUser().getId();
 
-        if (userService.getUserRole(adminId) == Role.USER)
-            throw new BpmnError("У обычного пользователя нет доступа к процессам администратора.");
+
+        if (userService.getUserRole(adminId) == Role.USER) {
+            delegateExecution.setVariable("authError", "User cannot start this process");
+            throw new BpmnError("authorizationRoleFailed");
+        }
 
         delegateExecution.setVariable("adminId", adminId);
     }

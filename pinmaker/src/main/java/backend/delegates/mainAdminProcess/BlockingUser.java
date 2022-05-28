@@ -22,7 +22,7 @@ public class BlockingUser implements JavaDelegate {
         if (userService.findUser(userId))
             adminService.blockUser(userId);
         else
-            throw new BpmnError("пользователя с userId = " + userId + " не существует");
+            throw new Exception("пользователя с userId = " + userId + " не существует");
 
     }
 }

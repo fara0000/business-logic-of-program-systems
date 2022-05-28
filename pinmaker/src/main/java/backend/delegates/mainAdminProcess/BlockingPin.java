@@ -22,7 +22,7 @@ public class BlockingPin implements JavaDelegate {
         if (pinService.findPin(pinId))
             adminService.blockUserPin(pinId);
         else
-            throw new BpmnError("пина с pinId = " + pinId + " не существует");
+            throw new Exception("пина с pinId = " + pinId + " не существует");
 
     }
 }

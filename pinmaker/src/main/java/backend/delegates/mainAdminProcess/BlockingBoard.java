@@ -22,7 +22,7 @@ public class BlockingBoard implements JavaDelegate {
         if (boardService.findBoardById(boardId))
             adminService.blockUserBoard(boardId);
         else
-            throw new BpmnError("доски с boardId = " + boardId + " не существует");
+            throw new Exception("доски с boardId = " + boardId + " не существует");
 
     }
 }

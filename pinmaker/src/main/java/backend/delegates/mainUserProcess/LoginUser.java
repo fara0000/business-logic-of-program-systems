@@ -22,18 +22,16 @@ public class LoginUser implements JavaDelegate {
         String password = (String) delegateExecution.getVariable("password");
         long userId = -1;
 
-        try {
-            LoginResponse loginResponse = userService.login(LoginRequest.builder().
-                    email(email).
-                    password(password).
-                    build());
-            userId = loginResponse.getUser().getId();
-        } catch (Exception e) {
-            throw new BpmnError("Неверные учетные данные пользователя");
-        }
+        LoginResponse loginResponse = userService.login(LoginRequest.builder().
+                email(email).
+                password(password).
+                build());
+        userId = loginResponse.getUser().getId();
 
-        if (userService.getUserRole(userId) == Role.ADMIN)
-            throw new BpmnError("У Администратора нет доступа к пользовательскому процессу");
+        if (userService.getUserRole(userId) == Role.ADMIN) {
+            delegateExecution.setVariable("authError", "Admin cannot start this process");
+            throw new BpmnError("authorizationRoleFailed");
+        }
 
         delegateExecution.setVariable("userId", userId);
     }
