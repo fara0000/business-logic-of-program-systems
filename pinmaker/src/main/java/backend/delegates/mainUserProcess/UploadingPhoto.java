@@ -6,13 +6,8 @@ import org.apache.commons.io.IOUtils;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
 @Component
 @RequiredArgsConstructor

@@ -199,12 +199,15 @@
     </bpmn:boundaryEvent>
     <bpmn:userTask id="Activity_12o1rfm" name="Show photo error">
       <bpmn:incoming>Flow_0a37cca</bpmn:incoming>
+      <bpmn:outgoing>Flow_15cku47</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0a37cca" sourceRef="Event_1ie8cc2" targetRef="Activity_12o1rfm" />
     <bpmn:userTask id="Activity_0d9aapf" name="Upload photo">
       <bpmn:incoming>Flow_1tboknf</bpmn:incoming>
+      <bpmn:incoming>Flow_15cku47</bpmn:incoming>
       <bpmn:outgoing>Flow_1edzgpz</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_15cku47" sourceRef="Activity_12o1rfm" targetRef="Activity_0d9aapf" />
   </bpmn:process>
   <bpmn:error id="Error_0rl8lvf" name="Error_0rnvrl6" />
   <bpmn:error id="Error_15dvjxr" name="Error_365hse9" />
@@ -358,6 +361,10 @@
         <di:waypoint x="1020" y="502" />
         <di:waypoint x="1020" y="430" />
         <di:waypoint x="1070" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15cku47_di" bpmnElement="Flow_15cku47">
+        <di:waypoint x="1070" y="310" />
+        <di:waypoint x="1010" y="310" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_0e045eu" bpmnElement="Activity_1eal8gd">
         <dc:Bounds x="340" y="370" width="100" height="80" />
