@@ -17,10 +17,10 @@ public class BlockingUser implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        long userId = (long) delegateExecution.getVariable("userId");
+        int userId = (int) delegateExecution.getVariable("userId");
 
-        if (userService.findUser(userId))
-            adminService.blockUser(userId);
+        if (userService.findUser((long) userId))
+            adminService.blockUser((long) userId);
         else
             throw new Exception("пользователя с userId = " + userId + " не существует");
 

@@ -17,10 +17,10 @@ public class BlockingPin implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        long pinId = (long) delegateExecution.getVariable("pinId");
+        int pinId = (int) delegateExecution.getVariable("pinId");
 
-        if (pinService.findPin(pinId))
-            adminService.blockUserPin(pinId);
+        if (pinService.findPin((long) pinId))
+            adminService.blockUserPin((long) pinId);
         else
             throw new Exception("пина с pinId = " + pinId + " не существует");
 

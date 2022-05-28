@@ -17,10 +17,10 @@ public class BlockingBoard implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        long boardId = (long) delegateExecution.getVariable("boardId");
+        int boardId = (int) delegateExecution.getVariable("boardId");
 
-        if (boardService.findBoardById(boardId))
-            adminService.blockUserBoard(boardId);
+        if (boardService.findBoardById((long) boardId))
+            adminService.blockUserBoard((long) boardId);
         else
             throw new Exception("доски с boardId = " + boardId + " не существует");
 

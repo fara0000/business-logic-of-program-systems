@@ -23,11 +23,6 @@ public class UploadingPhoto implements JavaDelegate {
 
         String fileName = photoUtil.generateFileNameForCamunda();
 
-        if (IOUtils.toByteArray(file) == null || IOUtils.toByteArray(file).length == 0) {
-            delegateExecution.setVariable("photoError", "Photo cannot be empty");
-            throw new BpmnError("uploadingPhotoError");
-        }
-
         photoUtil.putPhotoAcrossCamunda(PATH_TO_PHOTO_BUFFER, fileName, file);
 
         delegateExecution.setVariable("fileName", fileName);

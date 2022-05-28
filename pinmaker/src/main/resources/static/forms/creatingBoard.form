@@ -1,0 +1,30 @@
+{
+  "components": [
+    {
+      "label": "Board's name",
+      "type": "textfield",
+      "id": "Field_0lau8vy",
+      "key": "nameOfBoard",
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "my board"
+    },
+    {
+      "action": "submit",
+      "label": "save",
+      "type": "button",
+      "id": "Field_1badg8z",
+      "key": "field_13l1fhn"
+    }
+  ],
+  "type": "default",
+  "id": "registration",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.0.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "schemaVersion": 4
+}

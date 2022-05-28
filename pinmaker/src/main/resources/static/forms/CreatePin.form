@@ -1,0 +1,20 @@
+{
+  "components": [
+    {
+      "action": "submit",
+      "label": "Create Pin",
+      "type": "button",
+      "id": "Field_1557syw",
+      "key": "field_1sd725z"
+    }
+  ],
+  "type": "default",
+  "id": "Form_07ocq3k",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.0.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "schemaVersion": 4
+}

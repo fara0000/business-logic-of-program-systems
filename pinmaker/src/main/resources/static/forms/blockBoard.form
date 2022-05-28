@@ -1,0 +1,29 @@
+{
+  "components": [
+    {
+      "label": "Board id",
+      "type": "number",
+      "id": "Field_1e1wmm6",
+      "key": "boardId",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "action": "submit",
+      "label": "Block Board",
+      "type": "button",
+      "id": "Field_1ng8fsj",
+      "key": "field_11ncomy"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0rabsrf",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.0.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "schemaVersion": 4
+}

@@ -13,7 +13,6 @@ public class AddingBoard implements JavaDelegate {
 
     private final BoardService boardService;
 
-
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         String name = (String) delegateExecution.getVariable("nameOfBoard");
