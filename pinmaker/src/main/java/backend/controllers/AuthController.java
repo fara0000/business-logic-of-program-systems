@@ -37,7 +37,7 @@ public class AuthController {
                 return new ResponseEntity<>("Validation Error", HttpStatus.BAD_REQUEST);
             }
 
-            boolean isSaved = userService.saveMember(user);
+            boolean isSaved = userService.addUser(user);
             System.out.println(isSaved);
             return isSaved ? new ResponseEntity<>("User registered successfully!", HttpStatus.OK) :
                     new ResponseEntity<>("User has already registered!", HttpStatus.BAD_REQUEST);

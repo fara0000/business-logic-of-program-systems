@@ -10,6 +10,8 @@ public interface PinRepository extends JpaRepository<Pin, Long> {
 
     List<Pin> findAllByUser_Id(Long id);
 
+    Pin findPinById(Long id);
+
     List<Pin> findAllByBoard_Id(Long id);
 
 }

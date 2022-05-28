@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "text": "Do you have an account?",
+      "type": "text",
+      "id": "Field_19elyv6"
+    },
+    {
+      "type": "checkbox",
+      "id": "Field_0po903f",
+      "key": "account"
+    }
+  ],
+  "type": "default",
+  "id": "Form_1r9ve0b",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.0.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "schemaVersion": 4
+}

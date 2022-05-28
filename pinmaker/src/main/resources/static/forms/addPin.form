@@ -1,0 +1,53 @@
+{
+  "components": [
+    {
+      "label": "Pin name",
+      "type": "textfield",
+      "id": "Field_14vizdb",
+      "key": "nameOfPin",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Description",
+      "type": "textfield",
+      "id": "Field_1qfnbg6",
+      "key": "description"
+    },
+    {
+      "label": "Alt Text",
+      "type": "textfield",
+      "id": "Field_1hru7ow",
+      "key": "altText",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "link",
+      "type": "textfield",
+      "id": "Field_0e8x0pa",
+      "key": "link",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "action": "submit",
+      "label": "Create Pin",
+      "type": "button",
+      "id": "Field_0731net",
+      "key": "field_0uf3fx5"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0osdiax",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.0.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "schemaVersion": 4
+}

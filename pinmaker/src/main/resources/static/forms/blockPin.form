@@ -1,0 +1,29 @@
+{
+  "components": [
+    {
+      "label": "Pin id",
+      "type": "number",
+      "id": "Field_06ui07f",
+      "key": "pinId",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "action": "submit",
+      "label": "block Pin",
+      "type": "button",
+      "id": "Field_1l6iho3",
+      "key": "field_1vilydw"
+    }
+  ],
+  "type": "default",
+  "id": "Form_1uj8sin",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.0.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "schemaVersion": 4
+}

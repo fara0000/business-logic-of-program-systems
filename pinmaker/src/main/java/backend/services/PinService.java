@@ -128,6 +128,10 @@ public class PinService {
         return pinToDTO(pinRepository.findAllByBoard_Id(id));
     }
 
+    public boolean findPin(Long id) {
+        return pinRepository.findPinById(id) != null;
+    }
+
 
     private Pin toPinEntity(PinRequest pinRequest, Photo photo) throws IOException {
         Pin pin = new Pin();
@@ -162,4 +166,7 @@ public class PinService {
         }
         return photos;
     }
+
+
+
 }

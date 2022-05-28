@@ -36,19 +36,12 @@ public class PhotoController {
             return new ResponseEntity<>("Error: photo is so big !", HttpStatus.BAD_REQUEST);
         }
 
-        String file_name = generateFileName(file.getOriginalFilename(), file.getContentType());
+        String file_name = photoUtil.generateFileName(file.getOriginalFilename(), file.getContentType());
 
         photoUtil.putPhoto(PATH_TO_PHOTO_BUFFER, file_name, file);
 
         log.info("Photo has been uploaded");
         return new ResponseEntity<>(file_name, HttpStatus.CREATED);
-    }
-
-
-    private String generateFileName(String name, String type) {
-        String[] ct = type.split("/");
-        name = (name + Math.random()).replace(".", "");
-        return new StringBuilder().append(name).append(".").append(ct[1]).toString();
     }
 
 

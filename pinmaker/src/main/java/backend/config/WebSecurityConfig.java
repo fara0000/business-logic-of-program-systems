@@ -57,42 +57,50 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
         // Set unauthorized requests exception handler
         httpSecurity.exceptionHandling().authenticationEntryPoint((request, response, ex) -> {
-                    response.sendError(
-                            HttpServletResponse.SC_UNAUTHORIZED,
-                            ex.getMessage()
-                    );
-                }
-        )
+                            response.sendError(
+                                    HttpServletResponse.SC_UNAUTHORIZED,
+                                    ex.getMessage()
+                            );
+                        }
+                )
                 .and();
         // Set permissions on endpoints
         httpSecurity.authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
-                .antMatchers(HttpMethod.GET, "/").not().fullyAuthenticated()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/register").permitAll()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers( "/pin-builder/**").hasRole(Role.USER.name())
-                .antMatchers(ADMIN_ACCESS).hasRole(Role.ADMIN.name())
-                //Доступ только для авторизованных пользователей
-                .anyRequest().authenticated();
+
+                /** Разграничение доступа для основного приложения без camunda **/
+
+//               //Доступ только для не зарегистрированных пользователей
+//                .antMatchers(HttpMethod.GET, "/").not().fullyAuthenticated()
+//                .antMatchers(HttpMethod.POST, "/login").permitAll()
+//                .antMatchers(HttpMethod.POST, "/register").permitAll()
+//                .antMatchers(AUTH_WHITELIST).permitAll()
+//                .antMatchers( "/pin-builder/**").hasRole(Role.USER.name())
+//                .antMatchers(ADMIN_ACCESS).hasRole(Role.ADMIN.name())
+//                //Доступ только для авторизованных пользователей
+//                .anyRequest().authenticated();
+
+                /** Для camunda разграничение доступа через spring security отсутствует **/
+
+                .anyRequest().permitAll();
+
         httpSecurity.headers().frameOptions().sameOrigin();
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     private static final String[] AUTH_WHITELIST = {
-        "/swagger-resources/**",
-        "/swagger-ui/**",
-        "/v3/api-docs",
-        "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
     };
 
     private static final String[] ADMIN_ACCESS = {
-        "/admin/**"
+            "/admin/**"
     };
 
     private static final String[] USER_ACCESS = {
-       "/pin-builder/**",
-       "/pin-builder/find-board/**"
+            "/pin-builder/**",
+            "/pin-builder/find-board/**"
     };
 
     /**

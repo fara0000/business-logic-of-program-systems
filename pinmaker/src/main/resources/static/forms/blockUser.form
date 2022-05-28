@@ -1,0 +1,29 @@
+{
+  "components": [
+    {
+      "label": "Block user",
+      "type": "number",
+      "id": "Field_1lk159s",
+      "key": "userId",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "action": "submit",
+      "label": "Block user",
+      "type": "button",
+      "id": "Field_0kv4ufj",
+      "key": "field_1bmd26x"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0ka3wxz",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.0.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "schemaVersion": 4
+}

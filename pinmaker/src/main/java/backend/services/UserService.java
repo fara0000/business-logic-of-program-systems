@@ -47,7 +47,7 @@ public class UserService {
         return userRepository.findUserById(id) != null;
     }
 
-    public boolean saveMember(UserDto userDto) {
+    public boolean addUser(UserDto userDto) {
         if (checkUser(userDto.getEmail())) {
             return false;
         }
@@ -56,7 +56,7 @@ public class UserService {
         user.setPassword(userDto.getPassword());
         user.setAge(userDto.getAge());
         user.setRole(Role.USER);
-
+        user.set_blocked(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         try {
@@ -137,4 +137,10 @@ public class UserService {
 
         return pinList;
     }
+
+    public Role getUserRole(Long id) {
+        User user = userRepository.findUserById(id);
+        return user.getRole();
+    }
+
 }

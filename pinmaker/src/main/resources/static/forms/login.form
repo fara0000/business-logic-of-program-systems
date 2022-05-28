@@ -1,0 +1,45 @@
+{
+  "components": [
+    {
+      "label": "Email",
+      "type": "textfield",
+      "id": "Field_0g8rr7p",
+      "key": "email",
+      "validate": {
+        "required": true,
+        "minLength": 10,
+        "maxLength": 50
+      },
+      "properties": {}
+    },
+    {
+      "label": "Password",
+      "type": "textfield",
+      "id": "Field_0kilq5y",
+      "key": "password",
+      "validate": {
+        "required": true,
+        "minLength": 2
+      }
+    },
+    {
+      "action": "submit",
+      "label": "login",
+      "type": "button",
+      "id": "Field_1yyyy5f",
+      "key": "field_0cmmiqd",
+      "properties": {
+        "key1": "value"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_1xwfb56",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.0.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "schemaVersion": 4
+}
